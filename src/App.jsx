@@ -1,121 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useRef } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current; // get the canvas element
+    const ctx = canvas.getContext("2d"); // get the 2d drawing context
+
+    const tileSize = 32; // size of each tile in pixels
+    const worldMap = [
+      [0, 0, 0, 0, 0],
+      [0, 1, 1, 1, 0],
+      [0, 1, 0, 1, 0],
+      [0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0],
+    ];
+
+    // draw a square world map
+    canvas.width = worldMap[0].length * tileSize;
+    canvas.height = worldMap.length * tileSize;
+
+    // draw the world map
+    for (let y = 0; y < worldMap.length; y++) {
+      for (let x = 0; x < worldMap[y].length; x++) {
+        const tile = worldMap[y][x];
+
+        if (tile === 1) {
+          ctx.fillStyle = "green";
+        } else if (tile === 0) {
+          ctx.fillStyle = "blue";
+        }
+        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        // ctx.strokeStyle = "none";
+        // ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+      }
+    }
+
+    // draw a red square at the center of the map
+    const centerX = Math.floor(worldMap[0].length / 2);
+    const centerY = Math.floor(worldMap.length / 2);
+    ctx.fillStyle = "red";
+    ctx.fillRect(centerX * tileSize, centerY * tileSize, tileSize, tileSize);
+  }, []);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className="canvas-container">
+      <div>
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={300}
+          style={{ border: "1px solid black" }}
+        />
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
