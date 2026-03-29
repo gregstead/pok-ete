@@ -5,6 +5,6 @@
   height: 100vh;
 }
 
-.canvas-container canvas {
-  background-color: #f0f0f0;
+.canvas-container div {
+  background-color: none;
 }
