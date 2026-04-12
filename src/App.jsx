@@ -68,6 +68,7 @@ function App() {
 
   // add event listener for key presses
   function handleKeyDown(event) {
+    console.log("before switch, event.key:", event.key);
     switch (event.key) {
       case "ArrowUp":
         movePlayer(0, -1);
@@ -82,24 +83,28 @@ function App() {
         movePlayer(1, 0);
         break;
       default:
+        console.log("unhandled key:", event.key);
         break;
     }
   }
 
-  window.addEventListener("keydown", handleKeyDown);
-
   useEffect(() => {
+    console.log("useEffect called");
     drawMap(worldMap, tileSize);
     drawPlayer(playerX, playerY);
   }, [worldMap, tileSize, playerX, playerY]);
 
   return (
     <div className="canvas-container">
-      <div>
+      <div
+        className="canvas-handler-container"
+        tabIndex={0} // make the div focusable to receive key events
+        onKeyDown={handleKeyDown}
+      >
         <canvas
           ref={canvasRef}
           width={400}
-          height={300}
+          height={400}
           style={{ border: "1px solid black" }}
         />
       </div>
