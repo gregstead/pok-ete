@@ -68,7 +68,6 @@ function App() {
 
   // add event listener for key presses
   function handleKeyDown(event) {
-    console.log("before switch, event.key:", event.key);
     switch (event.key) {
       case "ArrowUp":
         movePlayer(0, -1);
@@ -83,13 +82,11 @@ function App() {
         movePlayer(1, 0);
         break;
       default:
-        console.log("unhandled key:", event.key);
         break;
     }
   }
 
   useEffect(() => {
-    console.log("useEffect called");
     drawMap(worldMap, tileSize);
     drawPlayer(playerX, playerY);
   }, [worldMap, tileSize, playerX, playerY]);
