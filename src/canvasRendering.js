@@ -1,4 +1,4 @@
-import worldMapData from "./Constants.js";
+import worldMapData from "./constants.js";
 
 function drawMap(canvasRef = null) {
   const canvas = canvasRef.current; // get the canvas element
