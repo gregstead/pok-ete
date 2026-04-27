@@ -8,14 +8,15 @@ import { handleKeyDown } from "./userInteractions.js";
 function App() {
   const canvasRef = useRef(null);
 
-  // states
-  const [playerX, setPlayerX] = useState(worldMapData.CENTER_X);
-  const [playerY, setPlayerY] = useState(worldMapData.CENTER_Y);
+  const [playerPosn, setPlayerPosn] = useState({
+    x: worldMapData.CENTER_X,
+    y: worldMapData.CENTER_Y,
+  });
 
   useEffect(() => {
     drawMap(canvasRef);
-    drawPlayer(playerX, playerY, canvasRef);
-  }, [playerX, playerY]);
+    drawPlayer(playerPosn.x, playerPosn.y, canvasRef);
+  }, [playerPosn.x, playerPosn.y]);
 
   return (
     <div className="canvas-container">
@@ -23,9 +24,8 @@ function App() {
         className="canvas-handler-container"
         tabIndex={0} // make the div focusable to receive key events
         onKeyDown={(event) =>
-          handleKeyDown(event, playerX, playerY, (newX, newY) => {
-            setPlayerX(newX);
-            setPlayerY(newY);
+          handleKeyDown(event, playerPosn.x, playerPosn.y, (newX, newY) => {
+            setPlayerPosn({ x: newX, y: newY });
           })
         }
       >
