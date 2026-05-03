@@ -33,6 +33,37 @@ function movePlayer(
   }
 }
 
+function playerInteraction(playerX, playerY, playerDirection) {
+  // check the tile in front of the player for an object
+  let targetX = playerX;
+  let targetY = playerY;
+
+  switch (playerDirection) {
+    case PLAYER_DIRECTIONS.UP:
+      targetY -= 1;
+      break;
+    case PLAYER_DIRECTIONS.DOWN:
+      targetY += 1;
+      break;
+    case PLAYER_DIRECTIONS.LEFT:
+      targetX -= 1;
+      break;
+    case PLAYER_DIRECTIONS.RIGHT:
+      targetX += 1;
+      break;
+    default:
+      break;
+  }
+
+  const objectAtTarget = worldMapData.OBJECTS.find(
+    (obj) => obj.objectx === targetX && obj.objecty === targetY,
+  );
+
+  if (objectAtTarget) {
+    alert(objectAtTarget.message);
+  }
+}
+
 // add event listener for key presses
 function handleKeyDown(event, playerX, playerY, playerDirection, callback) {
   switch (event.key) {
@@ -83,6 +114,7 @@ function handleKeyDown(event, playerX, playerY, playerDirection, callback) {
     case " ":
       // space bar pressed - could be used for interactions in the future
       console.log("Space bar pressed - interaction placeholder");
+      playerInteraction(playerX, playerY, playerDirection);
       break;
     default:
       break;
