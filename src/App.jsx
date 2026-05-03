@@ -3,7 +3,7 @@ import worldMapData from "./constants.js";
 import "./helpers.js";
 import "./App.css";
 import { drawMap, drawPlayer } from "./canvasRendering.js";
-import { handleKeyDown } from "./userInteractions.js";
+import { handleKeyDown, PLAYER_DIRECTIONS } from "./userInteractions.js";
 
 function App() {
   const canvasRef = useRef(null);
@@ -11,12 +11,13 @@ function App() {
   const [playerPosn, setPlayerPosn] = useState({
     x: worldMapData.CENTER_X,
     y: worldMapData.CENTER_Y,
+    direction: PLAYER_DIRECTIONS.DOWN,
   });
 
   useEffect(() => {
     drawMap(canvasRef);
-    drawPlayer(playerPosn.x, playerPosn.y, canvasRef);
-  }, [playerPosn.x, playerPosn.y]);
+    drawPlayer(playerPosn.x, playerPosn.y, playerPosn.direction, canvasRef);
+  }, [playerPosn.x, playerPosn.y, playerPosn.direction]);
 
   return (
     <div className="canvas-container">
@@ -24,9 +25,14 @@ function App() {
         className="canvas-handler-container"
         tabIndex={0} // make the div focusable to receive key events
         onKeyDown={(event) =>
-          handleKeyDown(event, playerPosn.x, playerPosn.y, (newX, newY) => {
-            setPlayerPosn({ x: newX, y: newY });
-          })
+          handleKeyDown(
+            event,
+            playerPosn.x,
+            playerPosn.y,
+            (newX, newY, direction) => {
+              setPlayerPosn({ x: newX, y: newY, direction });
+            },
+          )
         }
       >
         <canvas
