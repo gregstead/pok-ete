@@ -80,6 +80,10 @@ function handleKeyDown(event, playerX, playerY, playerDirection, callback) {
         callback,
       );
       break;
+    case " ":
+      // space bar pressed - could be used for interactions in the future
+      console.log("Space bar pressed - interaction placeholder");
+      break;
     default:
       break;
   }

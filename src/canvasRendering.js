@@ -38,11 +38,20 @@ function drawViewport(canvasRef = null, viewport = null) {
     for (let x = 0; x < _viewport[y].length; x++) {
       const tile = _viewport[y][x];
 
-      if (tile === 1) {
-        ctx.fillStyle = "green";
-      } else if (tile === 0) {
-        ctx.fillStyle = "blue";
+      switch (tile) {
+        case 1:
+          ctx.fillStyle = "green";
+          break;
+        case 2:
+          ctx.fillStyle = "yellow";
+          break;
+        case 9:
+          ctx.fillStyle = "orange";
+          break;
+        default:
+          ctx.fillStyle = "blue";
       }
+
       ctx.fillRect(
         x * worldMapData.TILE_SIZE,
         y * worldMapData.TILE_SIZE,
