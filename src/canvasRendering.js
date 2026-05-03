@@ -29,6 +29,30 @@ function drawMap(canvasRef = null) {
   }
 }
 
+function drawViewport(canvasRef = null, viewport = null) {
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext("2d");
+  const _viewport = viewport.viewport;
+
+  for (let y = 0; y < _viewport.length; y++) {
+    for (let x = 0; x < _viewport[y].length; x++) {
+      const tile = _viewport[y][x];
+
+      if (tile === 1) {
+        ctx.fillStyle = "green";
+      } else if (tile === 0) {
+        ctx.fillStyle = "blue";
+      }
+      ctx.fillRect(
+        x * worldMapData.TILE_SIZE,
+        y * worldMapData.TILE_SIZE,
+        worldMapData.TILE_SIZE,
+        worldMapData.TILE_SIZE,
+      );
+    }
+  }
+}
+
 function getFacingIndicatorPoints(posnX, posnY, direction) {
   const tileSize = worldMapData.TILE_SIZE;
   const tileLeft = posnX * tileSize;
@@ -88,4 +112,4 @@ function drawPlayer(posnX, posnY, direction, canvasRef = null) {
   ctx.fill();
 }
 
-export { drawMap, drawPlayer };
+export { drawMap, drawPlayer, drawViewport };

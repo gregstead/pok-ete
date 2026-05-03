@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import worldMapData from "./constants.js";
 import "./helpers.js";
 import "./App.css";
-import { drawMap, drawPlayer } from "./canvasRendering.js";
+import { drawMap, drawPlayer, drawViewport } from "./canvasRendering.js";
 import { handleKeyDown, PLAYER_DIRECTIONS } from "./userInteractions.js";
 
 function App() {
@@ -12,12 +12,23 @@ function App() {
     x: worldMapData.CENTER_X,
     y: worldMapData.CENTER_Y,
     direction: PLAYER_DIRECTIONS.DOWN,
+    viewPort: worldMapData.getViewport(
+      worldMapData.WORLD_MAP,
+      worldMapData.CENTER_X,
+      worldMapData.CENTER_Y,
+    ),
   });
 
   useEffect(() => {
-    drawMap(canvasRef);
-    drawPlayer(playerPosn.x, playerPosn.y, playerPosn.direction, canvasRef);
-  }, [playerPosn.x, playerPosn.y, playerPosn.direction]);
+    // drawMap(canvasRef);
+    drawViewport(canvasRef, playerPosn.viewPort);
+    drawPlayer(
+      playerPosn.x - playerPosn.viewPort.viewportOriginX,
+      playerPosn.y - playerPosn.viewPort.viewportOriginY,
+      playerPosn.direction,
+      canvasRef,
+    );
+  }, [playerPosn.x, playerPosn.y, playerPosn.direction, playerPosn.viewPort]);
 
   return (
     <div className="canvas-container">
@@ -31,15 +42,24 @@ function App() {
             playerPosn.y,
             playerPosn.direction,
             (newX, newY, direction) => {
-              setPlayerPosn({ x: newX, y: newY, direction });
+              setPlayerPosn({
+                x: newX,
+                y: newY,
+                direction,
+                viewPort: worldMapData.getViewport(
+                  worldMapData.WORLD_MAP,
+                  newX,
+                  newY,
+                ),
+              });
             },
           )
         }
       >
         <canvas
           ref={canvasRef}
-          width={400}
-          height={400}
+          width={playerPosn.viewPort.viewportSize * worldMapData.TILE_SIZE}
+          height={playerPosn.viewPort.viewportSize * worldMapData.TILE_SIZE}
           style={{ border: "1px solid black" }}
         />
       </div>

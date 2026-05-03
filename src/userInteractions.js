@@ -21,6 +21,7 @@ function movePlayer(
   const newY = playerY + dy;
 
   if (isValidMove(worldMapData.WORLD_MAP, newX, newY)) {
+    // if the player is changing direction, don't move them, just change their direction
     if (playerDirection !== dDirection) {
       callback(playerX, playerY, dDirection);
       return;
