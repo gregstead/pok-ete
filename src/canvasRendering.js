@@ -121,4 +121,24 @@ function drawPlayer(posnX, posnY, direction, canvasRef = null) {
   ctx.fill();
 }
 
-export { drawMap, drawPlayer, drawViewport };
+function drawMessageModal(message, canvasRef = null) {
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext("2d");
+  const modalWidth = canvas.width * 0.8;
+  const modalHeight = canvas.height * 0.3;
+  const modalX = (canvas.width - modalWidth) / 2;
+  const modalY = (canvas.height - modalHeight) / 2;
+
+  // draw semi-transparent background
+  ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+  ctx.fillRect(modalX, modalY, modalWidth, modalHeight);
+
+  // draw message text
+  ctx.fillStyle = "white";
+  ctx.font = "16px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+}
+
+export { drawMap, drawPlayer, drawViewport, drawMessageModal };

@@ -33,7 +33,8 @@ function movePlayer(
   }
 }
 
-function playerInteraction(playerX, playerY, playerDirection) {
+function playerInteraction(playerX, playerY, playerDirection, objectState) {
+  const { message, setMessage } = objectState;
   // check the tile in front of the player for an object
   let targetX = playerX;
   let targetY = playerY;
@@ -60,61 +61,114 @@ function playerInteraction(playerX, playerY, playerDirection) {
   );
 
   if (objectAtTarget) {
-    alert(objectAtTarget.message);
+    if (!message.visible) {
+      setMessage({ text: objectAtTarget.message, visible: true });
+    } else {
+      setMessage({ text: "", visible: false });
+    }
   }
 }
 
 // add event listener for key presses
-function handleKeyDown(event, playerX, playerY, playerDirection, callback) {
+function handleKeyDown(event, gameState) {
+  const { playerPosn, setPlayerPosn, message, setMessage } = gameState;
+
   switch (event.key) {
     case "ArrowUp":
       movePlayer(
-        playerX,
-        playerY,
+        playerPosn.x,
+        playerPosn.y,
         0,
         -1,
-        playerDirection,
+        playerPosn.direction,
         PLAYER_DIRECTIONS.UP,
-        callback,
+        (newX, newY, direction) => {
+          setPlayerPosn({
+            x: newX,
+            y: newY,
+            direction,
+            viewPort: worldMapData.getViewport(
+              worldMapData.WORLD_MAP,
+              newX,
+              newY,
+            ),
+          });
+        },
       );
       break;
     case "ArrowDown":
       movePlayer(
-        playerX,
-        playerY,
+        playerPosn.x,
+        playerPosn.y,
         0,
         1,
-        playerDirection,
+        playerPosn.direction,
         PLAYER_DIRECTIONS.DOWN,
-        callback,
+        (newX, newY, direction) => {
+          setPlayerPosn({
+            x: newX,
+            y: newY,
+            direction,
+            viewPort: worldMapData.getViewport(
+              worldMapData.WORLD_MAP,
+              newX,
+              newY,
+            ),
+          });
+        },
       );
       break;
     case "ArrowLeft":
       movePlayer(
-        playerX,
-        playerY,
+        playerPosn.x,
+        playerPosn.y,
         -1,
         0,
-        playerDirection,
+        playerPosn.direction,
         PLAYER_DIRECTIONS.LEFT,
-        callback,
+        (newX, newY, direction) => {
+          setPlayerPosn({
+            x: newX,
+            y: newY,
+            direction,
+            viewPort: worldMapData.getViewport(
+              worldMapData.WORLD_MAP,
+              newX,
+              newY,
+            ),
+          });
+        },
       );
       break;
     case "ArrowRight":
       movePlayer(
-        playerX,
-        playerY,
+        playerPosn.x,
+        playerPosn.y,
         1,
         0,
-        playerDirection,
+        playerPosn.direction,
         PLAYER_DIRECTIONS.RIGHT,
-        callback,
+        (newX, newY, direction) => {
+          setPlayerPosn({
+            x: newX,
+            y: newY,
+            direction,
+            viewPort: worldMapData.getViewport(
+              worldMapData.WORLD_MAP,
+              newX,
+              newY,
+            ),
+          });
+        },
       );
       break;
     case " ":
       // space bar pressed - could be used for interactions in the future
       console.log("Space bar pressed - interaction placeholder");
-      playerInteraction(playerX, playerY, playerDirection);
+      playerInteraction(playerPosn.x, playerPosn.y, playerPosn.direction, {
+        message,
+        setMessage,
+      });
       break;
     default:
       break;
