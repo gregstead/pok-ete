@@ -29,6 +29,7 @@ function App() {
             event,
             playerPosn.x,
             playerPosn.y,
+            playerPosn.direction,
             (newX, newY, direction) => {
               setPlayerPosn({ x: newX, y: newY, direction });
             },
