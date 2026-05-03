@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import worldMapData from "./constants.js";
-import "./helpers.js";
+import GLOBALS from "./constants.js";
+import GAME_MAPS from "./gameMaps.js";
+// import "./helpers.js";
 import "./App.css";
 import {
   drawPlayer,
@@ -11,15 +12,16 @@ import { handleKeyDown, PLAYER_DIRECTIONS } from "./userInteractions.js";
 
 function App() {
   const canvasRef = useRef(null);
-
+  const [currentMapId, setCurrentMapId] = useState("bedroom"); // default to bedroom map
   const [playerPosn, setPlayerPosn] = useState({
-    x: worldMapData.CENTER_X,
-    y: worldMapData.CENTER_Y,
+    x: GAME_MAPS[currentMapId].centerX,
+    y: GAME_MAPS[currentMapId].centerY,
     direction: PLAYER_DIRECTIONS.DOWN,
-    viewPort: worldMapData.getViewport(
-      worldMapData.WORLD_MAP,
-      worldMapData.CENTER_X,
-      worldMapData.CENTER_Y,
+    viewPort: GLOBALS.getViewport(
+      GAME_MAPS[currentMapId].tiles,
+      GAME_MAPS[currentMapId].centerX,
+      GAME_MAPS[currentMapId].centerY,
+      GAME_MAPS[currentMapId].objects,
     ),
   });
 
@@ -60,13 +62,15 @@ function App() {
             setPlayerPosn,
             message,
             setMessage,
+            currentMapId,
+            setCurrentMapId,
           })
         }
       >
         <canvas
           ref={canvasRef}
-          width={playerPosn.viewPort.viewportSize * worldMapData.TILE_SIZE}
-          height={playerPosn.viewPort.viewportSize * worldMapData.TILE_SIZE}
+          width={playerPosn.viewPort.viewportSize * GLOBALS.TILE_SIZE}
+          height={playerPosn.viewPort.viewportSize * GLOBALS.TILE_SIZE}
           style={{ border: "1px solid black" }}
         />
       </div>

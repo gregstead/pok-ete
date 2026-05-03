@@ -1,5 +1,6 @@
-import worldMapData from "./constants.js";
+import GLOBALS from "./constants.js";
 import { isValidMove } from "./helpers.js";
+import GAME_MAPS from "./gameMaps.js";
 
 const PLAYER_DIRECTIONS = {
   UP: "up",
@@ -15,12 +16,20 @@ function movePlayer(
   dy,
   playerDirection,
   dDirection,
+  currentMapId,
   callback,
 ) {
   const newX = playerX + dx;
   const newY = playerY + dy;
 
-  if (isValidMove(worldMapData.WORLD_MAP, newX, newY)) {
+  if (
+    isValidMove(
+      GAME_MAPS[currentMapId].tiles,
+      newX,
+      newY,
+      GAME_MAPS[currentMapId].objects,
+    )
+  ) {
     // if the player is changing direction, don't move them, just change their direction
     if (playerDirection !== dDirection) {
       callback(playerX, playerY, dDirection);
@@ -34,7 +43,6 @@ function movePlayer(
 }
 
 function playerInteraction(playerX, playerY, playerDirection, objectState) {
-  const { message, setMessage } = objectState;
   // check the tile in front of the player for an object
   let targetX = playerX;
   let targetY = playerY;
@@ -56,22 +64,48 @@ function playerInteraction(playerX, playerY, playerDirection, objectState) {
       break;
   }
 
-  const objectAtTarget = worldMapData.OBJECTS.find(
+  const objectAtTarget = GAME_MAPS[objectState.currentMapId].objects.find(
     (obj) => obj.objectx === targetX && obj.objecty === targetY,
   );
 
   if (objectAtTarget) {
-    if (!message.visible) {
-      setMessage({ text: objectAtTarget.message, visible: true });
-    } else {
-      setMessage({ text: "", visible: false });
-    }
+    objectInteractionHandler(objectAtTarget, objectState);
   }
 }
 
-// add event listener for key presses
+function objectInteractionHandler(gameObject, gameObjectState) {
+  let newMapId;
+  const { message, setMessage, currentMapId, setCurrentMapId } =
+    gameObjectState;
+
+  switch (gameObject.type) {
+    case "sign":
+      if (!message.visible) {
+        setMessage({ text: gameObject.message, visible: true });
+      } else {
+        setMessage({ text: "", visible: false });
+      }
+      break;
+    case "door":
+      // for simplicity, we'll just toggle between the bedroom and town maps when interacting with the door
+      newMapId = currentMapId === "bedroom" ? "town" : "bedroom";
+      setCurrentMapId(newMapId);
+      setMessage({ text: "", visible: false }); // hide any messages when changing maps
+      break;
+    default:
+      break;
+  }
+}
+
 function handleKeyDown(event, gameState) {
-  const { playerPosn, setPlayerPosn, message, setMessage } = gameState;
+  const {
+    playerPosn,
+    setPlayerPosn,
+    message,
+    setMessage,
+    currentMapId,
+    setCurrentMapId,
+  } = gameState;
 
   switch (event.key) {
     case "ArrowUp":
@@ -82,15 +116,17 @@ function handleKeyDown(event, gameState) {
         -1,
         playerPosn.direction,
         PLAYER_DIRECTIONS.UP,
+        currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
             x: newX,
             y: newY,
             direction,
-            viewPort: worldMapData.getViewport(
-              worldMapData.WORLD_MAP,
+            viewPort: GLOBALS.getViewport(
+              GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
+              GAME_MAPS[currentMapId].objects,
             ),
           });
         },
@@ -104,15 +140,17 @@ function handleKeyDown(event, gameState) {
         1,
         playerPosn.direction,
         PLAYER_DIRECTIONS.DOWN,
+        currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
             x: newX,
             y: newY,
             direction,
-            viewPort: worldMapData.getViewport(
-              worldMapData.WORLD_MAP,
+            viewPort: GLOBALS.getViewport(
+              GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
+              GAME_MAPS[currentMapId].objects,
             ),
           });
         },
@@ -126,15 +164,17 @@ function handleKeyDown(event, gameState) {
         0,
         playerPosn.direction,
         PLAYER_DIRECTIONS.LEFT,
+        currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
             x: newX,
             y: newY,
             direction,
-            viewPort: worldMapData.getViewport(
-              worldMapData.WORLD_MAP,
+            viewPort: GLOBALS.getViewport(
+              GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
+              GAME_MAPS[currentMapId].objects,
             ),
           });
         },
@@ -148,15 +188,17 @@ function handleKeyDown(event, gameState) {
         0,
         playerPosn.direction,
         PLAYER_DIRECTIONS.RIGHT,
+        currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
             x: newX,
             y: newY,
             direction,
-            viewPort: worldMapData.getViewport(
-              worldMapData.WORLD_MAP,
+            viewPort: GLOBALS.getViewport(
+              GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
+              GAME_MAPS[currentMapId].objects,
             ),
           });
         },
@@ -168,6 +210,8 @@ function handleKeyDown(event, gameState) {
       playerInteraction(playerPosn.x, playerPosn.y, playerPosn.direction, {
         message,
         setMessage,
+        currentMapId,
+        setCurrentMapId,
       });
       break;
     default:

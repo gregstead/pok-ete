@@ -1,33 +1,4 @@
-import worldMapData from "./constants.js";
-
-function drawMap(canvasRef = null) {
-  const canvas = canvasRef.current; // get the canvas element
-  const ctx = canvas.getContext("2d"); // get the 2d drawing context
-  // draw a square world map
-  canvas.width = worldMapData.WORLD_MAP[0].length * worldMapData.TILE_SIZE;
-  canvas.height = worldMapData.WORLD_MAP.length * worldMapData.TILE_SIZE;
-
-  // draw the world map
-  for (let y = 0; y < worldMapData.WORLD_MAP.length; y++) {
-    for (let x = 0; x < worldMapData.WORLD_MAP[y].length; x++) {
-      const tile = worldMapData.WORLD_MAP[y][x];
-
-      if (tile === 1) {
-        ctx.fillStyle = "green";
-      } else if (tile === 0) {
-        ctx.fillStyle = "blue";
-      }
-      ctx.fillRect(
-        x * worldMapData.TILE_SIZE,
-        y * worldMapData.TILE_SIZE,
-        worldMapData.TILE_SIZE,
-        worldMapData.TILE_SIZE,
-      );
-      // ctx.strokeStyle = "none";
-      // ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
-    }
-  }
-}
+import GLOBALS from "./constants.js";
 
 function drawViewport(canvasRef = null, viewport = null) {
   const canvas = canvasRef.current;
@@ -53,17 +24,17 @@ function drawViewport(canvasRef = null, viewport = null) {
       }
 
       ctx.fillRect(
-        x * worldMapData.TILE_SIZE,
-        y * worldMapData.TILE_SIZE,
-        worldMapData.TILE_SIZE,
-        worldMapData.TILE_SIZE,
+        x * GLOBALS.TILE_SIZE,
+        y * GLOBALS.TILE_SIZE,
+        GLOBALS.TILE_SIZE,
+        GLOBALS.TILE_SIZE,
       );
     }
   }
 }
 
 function getFacingIndicatorPoints(posnX, posnY, direction) {
-  const tileSize = worldMapData.TILE_SIZE;
+  const tileSize = GLOBALS.TILE_SIZE;
   const tileLeft = posnX * tileSize;
   const tileTop = posnY * tileSize;
   const tileCenterX = tileLeft + tileSize / 2;
@@ -106,10 +77,10 @@ function drawPlayer(posnX, posnY, direction, canvasRef = null) {
 
   ctx.fillStyle = "red";
   ctx.fillRect(
-    posnX * worldMapData.TILE_SIZE,
-    posnY * worldMapData.TILE_SIZE,
-    worldMapData.TILE_SIZE,
-    worldMapData.TILE_SIZE,
+    posnX * GLOBALS.TILE_SIZE,
+    posnY * GLOBALS.TILE_SIZE,
+    GLOBALS.TILE_SIZE,
+    GLOBALS.TILE_SIZE,
   );
 
   ctx.fillStyle = "white";
@@ -141,4 +112,4 @@ function drawMessageModal(message, canvasRef = null) {
   ctx.fillText(message, canvas.width / 2, canvas.height / 2);
 }
 
-export { drawMap, drawPlayer, drawViewport, drawMessageModal };
+export { drawPlayer, drawViewport, drawMessageModal };
