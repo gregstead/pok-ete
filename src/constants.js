@@ -1,5 +1,7 @@
 const TILE_SIZE = 32;
 
+const SPRITE_TILE_SIZE = 16; // the size of each individual sprite within the tileset image (assuming a grid layout)
+
 const BRAND_COLORS = {
   blue_sky: "#0994F9",
   blue_water_standard: "#1CA3EC",
@@ -14,6 +16,7 @@ const BRAND_COLORS = {
 
 const GLOBALS = {
   TILE_SIZE,
+  SPRITE_TILE_SIZE,
   BRAND_COLORS,
 };
 

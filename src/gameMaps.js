@@ -36,10 +36,12 @@ const BEDROOM_OBJECTS = [
   {
     name: "Door",
     sprite: "door.png",
+    sx: 80, // x coordinate of the door sprite within the tileset
+    sy: 240, // y coordinate of the door sprite within the tileset
     message: "This is a door.",
     type: "door",
-    objectx: 5,
-    objecty: 10,
+    objectx: 5, // coordinates for the door object in the bedroom map
+    objecty: 11,
   },
 ];
 
@@ -54,10 +56,14 @@ const TOWN_OBJECTS = [
   },
 ];
 
+const TOWN_TILESET = new Image();
+TOWN_TILESET.src = "/sprites/tileset.png";
+
 const TOWN_SPRITES = {
+  tileset: TOWN_TILESET,
   0: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.blue_water_standard }, // water
   1: { sx: 16, sy: 16, color: GLOBALS.BRAND_COLORS.green_standard }, // grass
-  2: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.green_light }, // path
+  2: { sx: 64, sy: 16, color: GLOBALS.BRAND_COLORS.green_light }, // path
   9: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.orange_standard }, // object (like sign or door)
 };
 

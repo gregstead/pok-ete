@@ -9,44 +9,38 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
     for (let x = 0; x < viewport[y].length; x++) {
       const tile = viewport[y][x];
 
-      switch (tile) {
-        case 1:
-          if (sprites[1] && !(sprites[1].sx && sprites[1].sy)) {
-            ctx.fillStyle = sprites[1].color;
-          } else if (sprites[1] && sprites[1].sx && sprites[1].sy) {
-            ctx.fillStyle = "black";
-          } else {
-            ctx.fillStyle = "red";
-          }
-          break;
-        case 2:
-          if (sprites && sprites[2]) {
-            ctx.fillStyle = sprites[2].color;
-          } else {
-            ctx.fillStyle = "red";
-          }
-          break;
-        case 9:
-          if (sprites && sprites[9]) {
-            ctx.fillStyle = sprites[9].color;
-          } else {
-            ctx.fillStyle = "red";
-          }
-          break;
-        default:
-          if (sprites && sprites[0]) {
-            ctx.fillStyle = sprites[0].color;
-          } else {
-            ctx.fillStyle = "red";
-          }
-      }
+      let tileToDraw = false;
 
-      ctx.fillRect(
-        x * GLOBALS.TILE_SIZE,
-        y * GLOBALS.TILE_SIZE,
-        GLOBALS.TILE_SIZE,
-        GLOBALS.TILE_SIZE,
-      );
+      if (sprites && sprites.tileset) {
+        // if a tileset image is provided, draw the tile from the tileset instead of a colored square
+        const spriteData = sprites[tile];
+
+        tileToDraw =
+          spriteData && spriteData.sx !== null && spriteData.sy !== null; // only draw default tile if we don't have valid sprite data for this tile
+
+        if (!tileToDraw) {
+          // if we don't have valid sprite data for this tile, fall back to drawing a colored square
+          ctx.fillStyle = sprites[tile].color || "red"; // default to red to indicate missing data
+          ctx.fillRect(
+            x * GLOBALS.TILE_SIZE,
+            y * GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+          );
+        } else {
+          ctx.drawImage(
+            sprites.tileset,
+            spriteData.sx,
+            spriteData.sy,
+            GLOBALS.SPRITE_TILE_SIZE,
+            GLOBALS.SPRITE_TILE_SIZE,
+            x * GLOBALS.TILE_SIZE,
+            y * GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+          );
+        }
+      }
     }
   }
 }
