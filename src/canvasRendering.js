@@ -70,26 +70,44 @@ function getFacingIndicatorPoints(posnX, posnY, direction) {
   }
 }
 
-function drawPlayer(posnX, posnY, direction, canvasRef = null) {
-  const canvas = canvasRef.current; // get the canvas element
-  const ctx = canvas.getContext("2d"); // get the 2d drawing context
-  const indicatorPoints = getFacingIndicatorPoints(posnX, posnY, direction);
+// function drawPlayer(posnX, posnY, direction, canvasRef = null) {
+//   const canvas = canvasRef.current; // get the canvas element
+//   const ctx = canvas.getContext("2d"); // get the 2d drawing context
+//   const indicatorPoints = getFacingIndicatorPoints(posnX, posnY, direction);
 
-  ctx.fillStyle = "red";
-  ctx.fillRect(
-    posnX * GLOBALS.TILE_SIZE,
-    posnY * GLOBALS.TILE_SIZE,
+//   ctx.fillStyle = "red";
+//   ctx.fillRect(
+//     posnX * GLOBALS.TILE_SIZE,
+//     posnY * GLOBALS.TILE_SIZE,
+//     GLOBALS.TILE_SIZE,
+//     GLOBALS.TILE_SIZE,
+//   );
+
+//   ctx.fillStyle = "white";
+//   ctx.beginPath();
+//   ctx.moveTo(indicatorPoints[0][0], indicatorPoints[0][1]);
+//   ctx.lineTo(indicatorPoints[1][0], indicatorPoints[1][1]);
+//   ctx.lineTo(indicatorPoints[2][0], indicatorPoints[2][1]);
+//   ctx.closePath();
+//   ctx.fill();
+// }
+
+const playerSprite = new Image();
+playerSprite.src = "/sprites/PlayerSpriteV1.png"; // make sure to have a player sprite at this path
+
+function drawPlayer(playerPosn, canvasRef = null) {
+  const { x, y, viewPort } = playerPosn;
+  const canvas = canvasRef.current; // get the canvas element
+  const ctx = canvas.getContext("2d");
+  const renderX = x - viewPort.viewportOriginX;
+  const renderY = y - viewPort.viewportOriginY;
+  ctx.drawImage(
+    playerSprite,
+    renderX * GLOBALS.TILE_SIZE,
+    renderY * GLOBALS.TILE_SIZE,
     GLOBALS.TILE_SIZE,
     GLOBALS.TILE_SIZE,
   );
-
-  ctx.fillStyle = "white";
-  ctx.beginPath();
-  ctx.moveTo(indicatorPoints[0][0], indicatorPoints[0][1]);
-  ctx.lineTo(indicatorPoints[1][0], indicatorPoints[1][1]);
-  ctx.lineTo(indicatorPoints[2][0], indicatorPoints[2][1]);
-  ctx.closePath();
-  ctx.fill();
 }
 
 function drawMessageModal(message, canvasRef = null) {

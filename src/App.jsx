@@ -34,24 +34,12 @@ function App() {
   useEffect(() => {
     console.log("useEffect triggered");
     drawViewport(canvasRef, playerPosn.viewPort);
-    drawPlayer(
-      playerPosn.x - playerPosn.viewPort.viewportOriginX,
-      playerPosn.y - playerPosn.viewPort.viewportOriginY,
-      playerPosn.direction,
-      canvasRef,
-    );
+    drawPlayer(playerPosn, canvasRef);
     if (message.visible) {
       // draw the message box
       drawMessageModal(message.text, canvasRef);
     }
-  }, [
-    playerPosn.x,
-    playerPosn.y,
-    playerPosn.direction,
-    playerPosn.viewPort,
-    message,
-    currentMapId,
-  ]);
+  }, [playerPosn, message, currentMapId]);
 
   return (
     <div className="canvas-container">
