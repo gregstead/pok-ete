@@ -1,7 +1,7 @@
 import GLOBALS from "./constants.js";
 import { getFacingIndicatorPoints } from "./helpers.js";
 
-function drawViewport(canvasRef = null, viewport = null) {
+function drawViewport(canvasRef = null, viewport = null, sprites = null) {
   const canvas = canvasRef.current;
   const ctx = canvas.getContext("2d");
   const _viewport = viewport.viewport;
@@ -12,16 +12,37 @@ function drawViewport(canvasRef = null, viewport = null) {
 
       switch (tile) {
         case 1:
-          ctx.fillStyle = "green";
+          if (sprites[1] && !(sprites[1].sx && sprites[1].sy)) {
+            ctx.fillStyle = sprites[1].color;
+          } else if (sprites[1] && sprites[1].sx && sprites[1].sy) {
+            ctx.fillStyle = "black";
+          } else {
+            ctx.fillStyle = "red";
+          }
+          //ctx.fillStyle = "green";
           break;
         case 2:
-          ctx.fillStyle = "yellow";
+          if (sprites && sprites[2]) {
+            ctx.fillStyle = sprites[2].color;
+          } else {
+            ctx.fillStyle = "red";
+          }
+          //ctx.fillStyle = "yellow";
           break;
         case 9:
-          ctx.fillStyle = "orange";
+          if (sprites && sprites[9]) {
+            ctx.fillStyle = sprites[9].color;
+          } else {
+            ctx.fillStyle = "red";
+          }
+          //ctx.fillStyle = "orange";
           break;
         default:
-          ctx.fillStyle = "blue";
+          if (sprites && sprites[0]) {
+            ctx.fillStyle = sprites[0].color;
+          } else {
+            ctx.fillStyle = "red";
+          }
       }
 
       ctx.fillRect(

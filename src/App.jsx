@@ -32,7 +32,11 @@ function App() {
 
   useEffect(() => {
     console.log("useEffect triggered");
-    drawViewport(canvasRef, playerPosn.viewPort);
+    drawViewport(
+      canvasRef,
+      playerPosn.viewPort,
+      GAME_MAPS[currentMapId].sprites,
+    );
     drawPlayer(playerPosn, canvasRef);
     if (message.visible) {
       // draw the message box

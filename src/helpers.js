@@ -42,9 +42,7 @@ function getViewport(worldMapData, playerX, playerY) {
         x >= 0 &&
         x < worldMapData.tiles[0].length
       ) {
-        row.push(
-          tileHandler(worldMapData.tiles[y][x], x, y, worldMapData.objects),
-        ); // use tileHandler to determine what to render
+        row.push(tileHandler(worldMapData, x, y)); // use tileHandler to determine what to render
       } else {
         row.push(0); // treat out-of-bounds as empty space
       }
@@ -55,15 +53,15 @@ function getViewport(worldMapData, playerX, playerY) {
   return viewport;
 }
 
-function tileHandler(tile, x, y, mapObjects) {
+function tileHandler(worldMapData, x, y) {
   // check if there's an object at this tile
-  const objectAtTile = mapObjects.find(
+  const objectAtTile = worldMapData.objects.find(
     (obj) => obj.objectx === x && obj.objecty === y,
   );
   if (objectAtTile) {
     return 9; // return a different value to indicate an object is present
   }
-  return tile; // otherwise return the original tile value
+  return worldMapData.tiles[y][x]; // otherwise return the original tile value
 }
 
 function getFacingIndicatorPoints(posnX, posnY, direction) {

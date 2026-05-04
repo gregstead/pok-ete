@@ -56,7 +56,7 @@ const TOWN_OBJECTS = [
 
 const TOWN_SPRITES = {
   0: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.blue_water_standard }, // water
-  1: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.green_standard }, // grass
+  1: { sx: 16, sy: 16, color: GLOBALS.BRAND_COLORS.green_standard }, // grass
   2: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.green_light }, // path
   9: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.orange_standard }, // object (like sign or door)
 };
