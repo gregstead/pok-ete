@@ -4,11 +4,10 @@ import { getFacingIndicatorPoints } from "./helpers.js";
 function drawViewport(canvasRef = null, viewport = null, sprites = null) {
   const canvas = canvasRef.current;
   const ctx = canvas.getContext("2d");
-  const _viewport = viewport.viewport;
 
-  for (let y = 0; y < _viewport.length; y++) {
-    for (let x = 0; x < _viewport[y].length; x++) {
-      const tile = _viewport[y][x];
+  for (let y = 0; y < viewport.length; y++) {
+    for (let x = 0; x < viewport[y].length; x++) {
+      const tile = viewport[y][x];
 
       switch (tile) {
         case 1:
@@ -19,7 +18,6 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
           } else {
             ctx.fillStyle = "red";
           }
-          //ctx.fillStyle = "green";
           break;
         case 2:
           if (sprites && sprites[2]) {
@@ -27,7 +25,6 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
           } else {
             ctx.fillStyle = "red";
           }
-          //ctx.fillStyle = "yellow";
           break;
         case 9:
           if (sprites && sprites[9]) {
@@ -35,7 +32,6 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
           } else {
             ctx.fillStyle = "red";
           }
-          //ctx.fillStyle = "orange";
           break;
         default:
           if (sprites && sprites[0]) {

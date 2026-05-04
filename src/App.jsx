@@ -34,7 +34,7 @@ function App() {
     console.log("useEffect triggered");
     drawViewport(
       canvasRef,
-      playerPosn.viewPort,
+      playerPosn.viewPort.viewport,
       GAME_MAPS[currentMapId].sprites,
     );
     drawPlayer(playerPosn, canvasRef);
