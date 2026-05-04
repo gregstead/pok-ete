@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import GLOBALS from "./constants.js";
 import GAME_MAPS from "./gameMaps.js";
-// import "./helpers.js";
+import { getViewport } from "./helpers.js";
 import "./App.css";
 import {
   drawPlayer,
@@ -23,7 +23,7 @@ function App() {
     x: GAME_MAPS[currentMapId].startingX,
     y: GAME_MAPS[currentMapId].startingY,
     direction: PLAYER_DIRECTIONS.DOWN,
-    viewPort: GLOBALS.getViewport(
+    viewPort: getViewport(
       GAME_MAPS[currentMapId].tiles,
       GAME_MAPS[currentMapId].startingX,
       GAME_MAPS[currentMapId].startingY,

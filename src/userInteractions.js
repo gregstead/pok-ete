@@ -1,5 +1,5 @@
 import GLOBALS from "./constants.js";
-import { isValidMove } from "./helpers.js";
+import { isValidMove, getViewport } from "./helpers.js";
 import GAME_MAPS from "./gameMaps.js";
 
 const PLAYER_DIRECTIONS = {
@@ -103,7 +103,7 @@ function objectInteractionHandler(gameObject, gameState) {
         x: GAME_MAPS[newMapId].startingX,
         y: GAME_MAPS[newMapId].startingY,
         direction: playerPosn.direction, // keep the same direction when changing maps
-        viewPort: GLOBALS.getViewport(
+        viewPort: getViewport(
           GAME_MAPS[newMapId].tiles,
           GAME_MAPS[newMapId].startingX,
           GAME_MAPS[newMapId].startingY,
@@ -134,7 +134,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: GLOBALS.getViewport(
+            viewPort: getViewport(
               GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
@@ -158,7 +158,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: GLOBALS.getViewport(
+            viewPort: getViewport(
               GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
@@ -182,7 +182,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: GLOBALS.getViewport(
+            viewPort: getViewport(
               GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
@@ -206,7 +206,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: GLOBALS.getViewport(
+            viewPort: getViewport(
               GAME_MAPS[currentMapId].tiles,
               newX,
               newY,
