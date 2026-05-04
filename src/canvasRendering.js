@@ -1,4 +1,5 @@
 import GLOBALS from "./constants.js";
+import { getFacingIndicatorPoints } from "./helpers.js";
 
 function drawViewport(canvasRef = null, viewport = null) {
   const canvas = canvasRef.current;
@@ -30,43 +31,6 @@ function drawViewport(canvasRef = null, viewport = null) {
         GLOBALS.TILE_SIZE,
       );
     }
-  }
-}
-
-function getFacingIndicatorPoints(posnX, posnY, direction) {
-  const tileSize = GLOBALS.TILE_SIZE;
-  const tileLeft = posnX * tileSize;
-  const tileTop = posnY * tileSize;
-  const tileCenterX = tileLeft + tileSize / 2;
-  const tileCenterY = tileTop + tileSize / 2;
-  const indicatorPadding = tileSize * 0.2;
-
-  switch (direction) {
-    case "up":
-      return [
-        [tileCenterX, tileTop + indicatorPadding],
-        [tileLeft + tileSize * 0.35, tileTop + tileSize * 0.45],
-        [tileLeft + tileSize * 0.65, tileTop + tileSize * 0.45],
-      ];
-    case "left":
-      return [
-        [tileLeft + indicatorPadding, tileCenterY],
-        [tileLeft + tileSize * 0.45, tileTop + tileSize * 0.35],
-        [tileLeft + tileSize * 0.45, tileTop + tileSize * 0.65],
-      ];
-    case "right":
-      return [
-        [tileLeft + tileSize - indicatorPadding, tileCenterY],
-        [tileLeft + tileSize * 0.55, tileTop + tileSize * 0.35],
-        [tileLeft + tileSize * 0.55, tileTop + tileSize * 0.65],
-      ];
-    case "down":
-    default:
-      return [
-        [tileCenterX, tileTop + tileSize - indicatorPadding],
-        [tileLeft + tileSize * 0.35, tileTop + tileSize * 0.55],
-        [tileLeft + tileSize * 0.65, tileTop + tileSize * 0.55],
-      ];
   }
 }
 

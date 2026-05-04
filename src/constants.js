@@ -14,7 +14,6 @@ const BRAND_COLORS = {
 
 const GLOBALS = {
   TILE_SIZE,
-  //getViewport,
   BRAND_COLORS,
 };
 

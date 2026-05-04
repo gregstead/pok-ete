@@ -8,3 +8,7 @@
 .canvas-container div {
   background-color: none;
 }
+
+.canvas-handler-container {
+  line-height: 0; /* Remove extra space below the canvas */
+}
