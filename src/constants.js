@@ -14,10 +14,18 @@ const BRAND_COLORS = {
   red_standard: "#E23667",
 };
 
+const PLAYER_DIRECTIONS = {
+  UP: "up",
+  DOWN: "down",
+  LEFT: "left",
+  RIGHT: "right",
+};
+
 const GLOBALS = {
   TILE_SIZE,
   SPRITE_TILE_SIZE,
   BRAND_COLORS,
+  PLAYER_DIRECTIONS,
 };
 
 export default GLOBALS;

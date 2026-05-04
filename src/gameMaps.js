@@ -38,10 +38,11 @@ const BEDROOM_OBJECTS = [
     sprite: "door.png",
     sx: 80, // x coordinate of the door sprite within the tileset
     sy: 240, // y coordinate of the door sprite within the tileset
+    mapTile: 1, // the tile type that this object is associated with (for rendering purposes)
     message: "This is a door.",
     type: "door",
-    objectx: 5, // coordinates for the door object in the bedroom map
-    objecty: 11,
+    objectx: 7, // coordinates for the door object in the bedroom map
+    objecty: 3,
   },
 ];
 

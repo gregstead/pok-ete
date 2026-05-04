@@ -11,7 +11,7 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
 
       let tileToDraw = false;
 
-      if (sprites && sprites.tileset) {
+      if (sprites && sprites.tileset && sprites[tile]) {
         // if a tileset image is provided, draw the tile from the tileset instead of a colored square
         const spriteData = sprites[tile];
 
@@ -40,32 +40,60 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
             GLOBALS.TILE_SIZE,
           );
         }
+      } else if (
+        sprites &&
+        tile.gameObject &&
+        tile.gameObject.sx &&
+        tile.gameObject.sy
+      ) {
+        // if tile itself has sprite data, draw it
+        ctx.drawImage(
+          sprites.tileset,
+          tile.gameObject.sx,
+          tile.gameObject.sy,
+          GLOBALS.SPRITE_TILE_SIZE,
+          GLOBALS.SPRITE_TILE_SIZE,
+          x * GLOBALS.TILE_SIZE,
+          y * GLOBALS.TILE_SIZE,
+          GLOBALS.TILE_SIZE,
+          GLOBALS.TILE_SIZE,
+        );
+      } else {
+        // if no tileset image, just draw a colored square based on the tile value
+        ctx.fillStyle = "gray"; // default color for unknown tiles
+        ctx.fillRect(
+          x * GLOBALS.TILE_SIZE,
+          y * GLOBALS.TILE_SIZE,
+          GLOBALS.TILE_SIZE,
+          GLOBALS.TILE_SIZE,
+        );
+        console.log("No sprite data for tile ", tile);
       }
     }
   }
 }
 
-function _drawPlayerOLD(posnX, posnY, direction, canvasRef = null) {
-  const canvas = canvasRef.current; // get the canvas element
-  const ctx = canvas.getContext("2d"); // get the 2d drawing context
-  const indicatorPoints = getFacingIndicatorPoints(posnX, posnY, direction);
+// function _drawPlayerOLD(posnX, posnY, direction, canvasRef = null) {
+//   const canvas = canvasRef.current; // get the canvas element
+//   const ctx = canvas.getContext("2d"); // get the 2d drawing context
+//   const indicatorPoints = getFacingIndicatorPoints(posnX, posnY, direction);
 
-  ctx.fillStyle = "red";
-  ctx.fillRect(
-    posnX * GLOBALS.TILE_SIZE,
-    posnY * GLOBALS.TILE_SIZE,
-    GLOBALS.TILE_SIZE,
-    GLOBALS.TILE_SIZE,
-  );
+//   ctx.fillStyle = "red";
+//   ctx.fillRect(
+//     posnX * GLOBALS.TILE_SIZE,
+//     posnY * GLOBALS.TILE_SIZE,
+//     GLOBALS.TILE_SIZE,
+//     GLOBALS.TILE_SIZE,
+//   );
 
-  ctx.fillStyle = "white";
-  ctx.beginPath();
-  ctx.moveTo(indicatorPoints[0][0], indicatorPoints[0][1]);
-  ctx.lineTo(indicatorPoints[1][0], indicatorPoints[1][1]);
-  ctx.lineTo(indicatorPoints[2][0], indicatorPoints[2][1]);
-  ctx.closePath();
-  ctx.fill();
-}
+//   ctx.fillStyle = "white";
+//   ctx.beginPath();
+//   ctx.moveTo(indicatorPoints[0][0], indicatorPoints[0][1]);
+//   ctx.lineTo(indicatorPoints[1][0], indicatorPoints[1][1]);
+//   ctx.lineTo(indicatorPoints[2][0], indicatorPoints[2][1]);
+//   ctx.closePath();
+//   ctx.fill();
+// }
 
 const playerSprite = new Image();
 playerSprite.src = "/sprites/PlayerSpriteV1.png"; // make sure to have a player sprite at this path
@@ -87,6 +115,8 @@ function drawPlayer(playerPosn, canvasRef = null) {
     GLOBALS.TILE_SIZE,
   );
 
+  console.log("drawImage fired");
+
   ctx.fillStyle = "white";
   ctx.beginPath();
   ctx.moveTo(indicatorPoints[0][0], indicatorPoints[0][1]);
@@ -94,6 +124,8 @@ function drawPlayer(playerPosn, canvasRef = null) {
   ctx.lineTo(indicatorPoints[2][0], indicatorPoints[2][1]);
   ctx.closePath();
   ctx.fill();
+
+  console.log("indicator point drawn");
 }
 
 function drawMessageModal(message, canvasRef = null) {

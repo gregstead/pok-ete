@@ -2,12 +2,14 @@ import GLOBALS from "./constants.js";
 import { isValidMove, getViewport } from "./helpers.js";
 import GAME_MAPS from "./gameMaps.js";
 
-const PLAYER_DIRECTIONS = {
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right",
-};
+// const PLAYER_DIRECTIONS = {
+//   UP: "up",
+//   DOWN: "down",
+//   LEFT: "left",
+//   RIGHT: "right",
+// };
+
+const PLAYER_DIRECTIONS = GLOBALS.PLAYER_DIRECTIONS;
 
 function movePlayer(
   playerX,

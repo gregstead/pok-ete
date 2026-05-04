@@ -59,7 +59,12 @@ function tileHandler(worldMapData, x, y) {
     (obj) => obj.objectx === x && obj.objecty === y,
   );
   if (objectAtTile) {
-    return 9; // return a different value to indicate an object is present
+    //return 9; // return a different value to indicate an object is present
+    return {
+      gameObject: worldMapData.objects.find(
+        (obj) => obj.objectx === x && obj.objecty === y,
+      ),
+    };
   }
   return worldMapData.tiles[y][x]; // otherwise return the original tile value
 }
