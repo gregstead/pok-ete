@@ -42,12 +42,13 @@ function movePlayer(
   }
 }
 
-function playerInteraction(playerX, playerY, playerDirection, objectState) {
+function playerInteraction(gameState) {
+  const { playerPosn } = gameState;
   // check the tile in front of the player for an object
-  let targetX = playerX;
-  let targetY = playerY;
+  let targetX = playerPosn.x;
+  let targetY = playerPosn.y;
 
-  switch (playerDirection) {
+  switch (playerPosn.direction) {
     case PLAYER_DIRECTIONS.UP:
       targetY -= 1;
       break;
@@ -64,19 +65,25 @@ function playerInteraction(playerX, playerY, playerDirection, objectState) {
       break;
   }
 
-  const objectAtTarget = GAME_MAPS[objectState.currentMapId].objects.find(
+  const objectAtTarget = GAME_MAPS[gameState.currentMapId].objects.find(
     (obj) => obj.objectx === targetX && obj.objecty === targetY,
   );
 
   if (objectAtTarget) {
-    objectInteractionHandler(objectAtTarget, objectState);
+    objectInteractionHandler(objectAtTarget, gameState);
   }
 }
 
-function objectInteractionHandler(gameObject, gameObjectState) {
+function objectInteractionHandler(gameObject, gameState) {
   let newMapId;
-  const { message, setMessage, currentMapId, setCurrentMapId } =
-    gameObjectState;
+  const {
+    message,
+    setMessage,
+    currentMapId,
+    setCurrentMapId,
+    playerPosn,
+    setPlayerPosn,
+  } = gameState;
 
   switch (gameObject.type) {
     case "sign":
@@ -91,6 +98,18 @@ function objectInteractionHandler(gameObject, gameObjectState) {
       newMapId = currentMapId === "bedroom" ? "town" : "bedroom";
       setCurrentMapId(newMapId);
       setMessage({ text: "", visible: false }); // hide any messages when changing maps
+      // reset player position to the center of the new map
+      setPlayerPosn({
+        x: GAME_MAPS[newMapId].startingX,
+        y: GAME_MAPS[newMapId].startingY,
+        direction: playerPosn.direction, // keep the same direction when changing maps
+        viewPort: GLOBALS.getViewport(
+          GAME_MAPS[newMapId].tiles,
+          GAME_MAPS[newMapId].startingX,
+          GAME_MAPS[newMapId].startingY,
+          GAME_MAPS[newMapId].objects,
+        ),
+      });
       break;
     default:
       break;
@@ -98,14 +117,7 @@ function objectInteractionHandler(gameObject, gameObjectState) {
 }
 
 function handleKeyDown(event, gameState) {
-  const {
-    playerPosn,
-    setPlayerPosn,
-    message,
-    setMessage,
-    currentMapId,
-    setCurrentMapId,
-  } = gameState;
+  const { playerPosn, setPlayerPosn, currentMapId } = gameState;
 
   switch (event.key) {
     case "ArrowUp":
@@ -207,12 +219,7 @@ function handleKeyDown(event, gameState) {
     case " ":
       // space bar pressed - could be used for interactions in the future
       console.log("Space bar pressed - interaction placeholder");
-      playerInteraction(playerPosn.x, playerPosn.y, playerPosn.direction, {
-        message,
-        setMessage,
-        currentMapId,
-        setCurrentMapId,
-      });
+      playerInteraction(gameState);
       break;
     default:
       break;

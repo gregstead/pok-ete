@@ -12,26 +12,27 @@ import { handleKeyDown, PLAYER_DIRECTIONS } from "./userInteractions.js";
 
 function App() {
   const canvasRef = useRef(null);
-  const [currentMapId, setCurrentMapId] = useState("bedroom"); // default to bedroom map
-  const [playerPosn, setPlayerPosn] = useState({
-    x: GAME_MAPS[currentMapId].centerX,
-    y: GAME_MAPS[currentMapId].centerY,
-    direction: PLAYER_DIRECTIONS.DOWN,
-    viewPort: GLOBALS.getViewport(
-      GAME_MAPS[currentMapId].tiles,
-      GAME_MAPS[currentMapId].centerX,
-      GAME_MAPS[currentMapId].centerY,
-      GAME_MAPS[currentMapId].objects,
-    ),
-  });
-
+  // Game Messages
   const [message, setMessage] = useState({
     text: "",
     visible: false,
   });
 
+  const [currentMapId, setCurrentMapId] = useState("bedroom"); // default to bedroom map
+  const [playerPosn, setPlayerPosn] = useState({
+    x: GAME_MAPS[currentMapId].startingX,
+    y: GAME_MAPS[currentMapId].startingY,
+    direction: PLAYER_DIRECTIONS.DOWN,
+    viewPort: GLOBALS.getViewport(
+      GAME_MAPS[currentMapId].tiles,
+      GAME_MAPS[currentMapId].startingX,
+      GAME_MAPS[currentMapId].startingY,
+      GAME_MAPS[currentMapId].objects,
+    ),
+  });
+
   useEffect(() => {
-    // drawMap(canvasRef);
+    console.log("useEffect triggered");
     drawViewport(canvasRef, playerPosn.viewPort);
     drawPlayer(
       playerPosn.x - playerPosn.viewPort.viewportOriginX,
@@ -49,6 +50,7 @@ function App() {
     playerPosn.direction,
     playerPosn.viewPort,
     message,
+    currentMapId,
   ]);
 
   return (

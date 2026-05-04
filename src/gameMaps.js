@@ -52,18 +52,30 @@ const TOWN_OBJECTS = [
   },
 ];
 
+function getCenterX(map) {
+  return Math.floor(map[0].length / 2);
+}
+
+function getCenterY(map) {
+  return Math.floor(map.length / 2);
+}
+
 const GAME_MAPS = {
   bedroom: {
     tiles: BEDROOM_MAP,
     objects: BEDROOM_OBJECTS,
-    centerX: Math.floor(BEDROOM_MAP[0].length / 2),
-    centerY: Math.floor(BEDROOM_MAP.length / 2),
+    centerX: getCenterX(BEDROOM_MAP),
+    centerY: getCenterY(BEDROOM_MAP),
+    startingX: 1,
+    startingY: 1,
   },
   town: {
     tiles: TOWN_MAP,
     objects: TOWN_OBJECTS,
-    centerX: Math.floor(TOWN_MAP[0].length / 2),
-    centerY: Math.floor(TOWN_MAP.length / 2),
+    centerX: getCenterX(TOWN_MAP),
+    centerY: getCenterY(TOWN_MAP),
+    startingX: 1,
+    startingY: 1,
   },
 };
 
