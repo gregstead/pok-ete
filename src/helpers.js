@@ -12,15 +12,15 @@ function isObjectAtPosition(objects, x, y) {
   return objects.some((obj) => obj.objectx === x && obj.objecty === y);
 }
 
-function isValidMove(worldMap, x, y, gameObjects) {
+function isValidMove(worldMapData, x, y) {
   return (
-    isOnMap(worldMap, x, y) &&
-    isWalkable(worldMap, x, y) &&
-    !isObjectAtPosition(gameObjects, x, y)
+    isOnMap(worldMapData.tiles, x, y) &&
+    isWalkable(worldMapData.tiles, x, y) &&
+    !isObjectAtPosition(worldMapData.objects, x, y)
   );
 }
 
-function getViewport(worldMap, playerX, playerY, mapObjects) {
+function getViewport(worldMapData, playerX, playerY) {
   const viewportSize = 5; // 5x5 grid around the player
   const halfViewport = Math.floor(viewportSize / 2);
   const viewportOriginX = playerX - halfViewport;
@@ -36,8 +36,15 @@ function getViewport(worldMap, playerX, playerY, mapObjects) {
   for (let y = playerY - halfViewport; y <= playerY + halfViewport; y++) {
     const row = [];
     for (let x = playerX - halfViewport; x <= playerX + halfViewport; x++) {
-      if (y >= 0 && y < worldMap.length && x >= 0 && x < worldMap[0].length) {
-        row.push(tileHandler(worldMap[y][x], x, y, mapObjects)); // use tileHandler to determine what to render
+      if (
+        y >= 0 &&
+        y < worldMapData.tiles.length &&
+        x >= 0 &&
+        x < worldMapData.tiles[0].length
+      ) {
+        row.push(
+          tileHandler(worldMapData.tiles[y][x], x, y, worldMapData.objects),
+        ); // use tileHandler to determine what to render
       } else {
         row.push(0); // treat out-of-bounds as empty space
       }

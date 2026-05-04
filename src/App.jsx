@@ -24,10 +24,9 @@ function App() {
     y: GAME_MAPS[currentMapId].startingY,
     direction: PLAYER_DIRECTIONS.DOWN,
     viewPort: getViewport(
-      GAME_MAPS[currentMapId].tiles,
+      GAME_MAPS[currentMapId],
       GAME_MAPS[currentMapId].startingX,
       GAME_MAPS[currentMapId].startingY,
-      GAME_MAPS[currentMapId].objects,
     ),
   });
 

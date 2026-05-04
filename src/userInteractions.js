@@ -22,14 +22,7 @@ function movePlayer(
   const newX = playerX + dx;
   const newY = playerY + dy;
 
-  if (
-    isValidMove(
-      GAME_MAPS[currentMapId].tiles,
-      newX,
-      newY,
-      GAME_MAPS[currentMapId].objects,
-    )
-  ) {
+  if (isValidMove(GAME_MAPS[currentMapId], newX, newY)) {
     // if the player is changing direction, don't move them, just change their direction
     if (playerDirection !== dDirection) {
       callback(playerX, playerY, dDirection);
@@ -104,11 +97,10 @@ function objectInteractionHandler(gameObject, gameState) {
         y: GAME_MAPS[newMapId].startingY,
         direction: playerPosn.direction, // keep the same direction when changing maps
         viewPort: getViewport(
-          GAME_MAPS[newMapId].tiles,
+          GAME_MAPS[newMapId],
           GAME_MAPS[newMapId].startingX,
           GAME_MAPS[newMapId].startingY,
-          GAME_MAPS[newMapId].objects,
-        ),
+        ), // update the viewport for the new map
       });
       break;
     default:
@@ -134,12 +126,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: getViewport(
-              GAME_MAPS[currentMapId].tiles,
-              newX,
-              newY,
-              GAME_MAPS[currentMapId].objects,
-            ),
+            viewPort: getViewport(GAME_MAPS[currentMapId], newX, newY),
           });
         },
       );
@@ -158,12 +145,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: getViewport(
-              GAME_MAPS[currentMapId].tiles,
-              newX,
-              newY,
-              GAME_MAPS[currentMapId].objects,
-            ),
+            viewPort: getViewport(GAME_MAPS[currentMapId], newX, newY),
           });
         },
       );
@@ -182,12 +164,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: getViewport(
-              GAME_MAPS[currentMapId].tiles,
-              newX,
-              newY,
-              GAME_MAPS[currentMapId].objects,
-            ),
+            viewPort: getViewport(GAME_MAPS[currentMapId], newX, newY),
           });
         },
       );
@@ -206,12 +183,7 @@ function handleKeyDown(event, gameState) {
             x: newX,
             y: newY,
             direction,
-            viewPort: getViewport(
-              GAME_MAPS[currentMapId].tiles,
-              newX,
-              newY,
-              GAME_MAPS[currentMapId].objects,
-            ),
+            viewPort: getViewport(GAME_MAPS[currentMapId], newX, newY),
           });
         },
       );
