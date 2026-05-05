@@ -142,12 +142,6 @@ function drawMessageModal(message, canvasRef = null) {
   const modalX = (canvas.width - modalWidth) / 2;
   // const modalY = (canvas.height - modalHeight) / 2;
   const modalY = canvas.height - modalHeight;
-  console.log("Modal dimensions: ", {
-    modalX,
-    modalY,
-    modalWidth,
-    modalHeight,
-  });
 
   // draw semi-transparent background
   ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
@@ -159,10 +153,39 @@ function drawMessageModal(message, canvasRef = null) {
   ctx.textAlign = "left";
   ctx.textBaseline = "bottom"; // align text to the top of the modal
   ctx.fillText(
-    message,
+    message.text,
     canvas.width / 10,
     canvas.height - canvas.height * (2 / 9),
   ); // position text with some padding from the left and bottom edges of the modal
+
+  if (message.promptOptions) {
+    const promptModalWidth = canvas.width * (7 / 12);
+    const promptModalHeight = canvas.height * (5 / 9);
+    const promptModalX = 0;
+    const promptModalY = 0; // position above the main message modal with some padding
+    // draw prompt options
+    // draw semi-transparent background
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(
+      promptModalX,
+      promptModalY,
+      promptModalWidth,
+      promptModalHeight,
+    );
+
+    for (let i = 0; i < message.promptOptions.length; i++) {
+      const option = message.promptOptions[i];
+      ctx.fillStyle = "white";
+      ctx.font = "10px Arial";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom"; // align text to the top of the modal
+      ctx.fillText(
+        option,
+        canvas.width / 10,
+        canvas.height - canvas.height * ((8 - i) / 9),
+      );
+    }
+  }
 }
 
 export { drawPlayer, drawViewport, drawMessageModal };

@@ -1,11 +1,11 @@
 // Magic numbers
 
-const CANVAS_WIDTH = 160;
-const CANVAS_HEIGHT = 144;
+const CANVAS_WIDTH = 624;
+const CANVAS_HEIGHT = 468;
 const SPRITE_TILE_SIZE = 32; // the size of each individual sprite within the tileset image (assuming a grid layout)
-const TILE_SIZE = 32;
+const TILE_SIZE = 38;
 
-const CANVAS_PIXEL_SCALE = 2;
+const CANVAS_PIXEL_SCALE = 1;
 
 const VIEWPORT_TILE_WIDTH = Math.ceil(
   (CANVAS_WIDTH * CANVAS_PIXEL_SCALE) / TILE_SIZE,

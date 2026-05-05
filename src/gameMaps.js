@@ -33,14 +33,33 @@ const TOWN_MAP = [
 ];
 
 const BEDROOM_OBJECTS = [
+  //   {
+  //     name: "Door",
+  //     type: "door",
+  //     tilsetIndex: { x: 52, y: 19 }, // the tile coordinates of the door sprite within the tileset
+  //     terrain: 1, // the tile type that this object is associated with (for rendering purposes)
+  //     message: "Leave bedroom and go to town?", // the message to display when the player interacts with this object
+  //     objectx: 7, // coordinates for the door object in the bedroom map
+  //     objecty: 3,
+  //     action: {
+  //       type: "changeMap", // define the action to take when interacting with this object
+  //       targetMap: "town", // the map to switch to when the door is interacted with
+  //     },
+
+  //   },
   {
-    name: "Door",
-    type: "door",
-    tilsetIndex: { x: 52, y: 19 }, // the tile coordinates of the door sprite within the tileset
-    terrain: 1, // the tile type that this object is associated with (for rendering purposes)
-    message: "This is a door.",
-    objectx: 7, // coordinates for the door object in the bedroom map
+    name: "Bedroom Door",
+    type: "portal",
+    tilsetIndex: { x: 52, y: 19 },
+    terrain: 1,
+    objectx: 7,
     objecty: 3,
+    action: {
+      type: "changeMap",
+      targetMap: "town",
+      promptMessage: "Leave bedroom and go to town?",
+      promptOptions: ["Yes", "No"], // options for the player to choose from when prompted
+    },
   },
 ];
 
@@ -50,7 +69,7 @@ const TOWN_OBJECTS = [
     type: "sign",
     tilsetIndex: { x: 21, y: 20 },
     terrain: 1,
-    message: "Welcome to Pokemon Eternal!",
+    message: "Welcome to Blissful Meadows!",
     objectx: 7,
     objecty: 5,
   },

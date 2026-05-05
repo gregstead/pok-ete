@@ -67,7 +67,7 @@ function objectInteractionHandler(gameObject, gameState) {
   const {
     message,
     setMessage,
-    currentMapId,
+    _currentMapId,
     setCurrentMapId,
     playerPosn,
     setPlayerPosn,
@@ -76,16 +76,32 @@ function objectInteractionHandler(gameObject, gameState) {
   switch (gameObject.type) {
     case "sign":
       if (!message.visible) {
-        setMessage({ text: gameObject.message, visible: true });
+        setMessage({
+          text: gameObject.message,
+          visible: true,
+          promptOptions: null,
+        });
       } else {
-        setMessage({ text: "", visible: false });
+        setMessage({ text: "", visible: false, promptOptions: null });
       }
       break;
-    case "door":
-      // for simplicity, we'll just toggle between the bedroom and town maps when interacting with the door
-      newMapId = currentMapId === "bedroom" ? "town" : "bedroom";
+    case "portal":
+      if (!message.visible) {
+        setMessage({
+          text: gameObject.action.promptMessage,
+          visible: true,
+          promptOptions: gameObject.action.promptOptions,
+        });
+
+        return; // wait for the player to acknowledge the message before changing maps
+      } else {
+        setMessage({ text: "", visible: false, promptOptions: null });
+      }
+
+      newMapId = gameObject.action.targetMap;
+
       setCurrentMapId(newMapId);
-      setMessage({ text: "", visible: false }); // hide any messages when changing maps
+      setMessage({ text: "", visible: false, promptOptions: null }); // hide any messages when changing maps
       // reset player position to the center of the new map
       setPlayerPosn({
         x: GAME_MAPS[newMapId].startingX,

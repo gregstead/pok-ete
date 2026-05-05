@@ -9,6 +9,7 @@ import {
   drawMessageModal,
 } from "./canvasRendering.js";
 import { handleKeyDown } from "./userInteractions.js";
+import GamePrompt from "./GamePrompt.jsx";
 
 function App() {
   const canvasRef = useRef(null);
@@ -16,6 +17,13 @@ function App() {
   const [message, setMessage] = useState({
     text: "",
     visible: false,
+    promptOptions: null, // for future use when we want to add options to messages (e.g. yes/no prompts)
+  });
+
+  const [gamePompts, setGamePrompts] = useState({
+    text: "",
+    visible: false,
+    promptOptions: null,
   });
 
   const [assetsLoaded, setAssetsLoaded] = useState(false); // track whether assets are loaded
@@ -45,38 +53,45 @@ function App() {
     drawPlayer(playerPosn, canvasRef);
     if (message.visible) {
       // draw the message box
-      drawMessageModal(message.text, canvasRef);
+      drawMessageModal(message, canvasRef);
     }
   }, [playerPosn, message, currentMapId, assetsLoaded]);
 
   return (
-    <div className="canvas-container">
-      <div
-        className="canvas-handler-container"
-        tabIndex={0} // make the div focusable to receive key events
-        onKeyDown={(event) =>
-          handleKeyDown(event, {
-            playerPosn,
-            setPlayerPosn,
-            message,
-            setMessage,
-            currentMapId,
-            setCurrentMapId,
-          })
-        }
-      >
-        <canvas
-          ref={canvasRef}
-          width={
-            GLOBALS.CANVAS_PROPERTIES.width *
-            GLOBALS.CANVAS_PROPERTIES.pixelScale
+    <div className="game-container">
+      <GamePrompt
+        text={message.text}
+        visible={message.visible}
+        promptOptions={message.promptOptions}
+      />
+      <div className="canvas-container">
+        <div
+          className="canvas-handler-container"
+          tabIndex={0} // make the div focusable to receive key events
+          onKeyDown={(event) =>
+            handleKeyDown(event, {
+              playerPosn,
+              setPlayerPosn,
+              message,
+              setMessage,
+              currentMapId,
+              setCurrentMapId,
+            })
           }
-          height={
-            GLOBALS.CANVAS_PROPERTIES.height *
-            GLOBALS.CANVAS_PROPERTIES.pixelScale
-          }
-          style={{ border: "1px solid black" }}
-        />
+        >
+          <canvas
+            ref={canvasRef}
+            width={
+              GLOBALS.CANVAS_PROPERTIES.width *
+              GLOBALS.CANVAS_PROPERTIES.pixelScale
+            }
+            height={
+              GLOBALS.CANVAS_PROPERTIES.height *
+              GLOBALS.CANVAS_PROPERTIES.pixelScale
+            }
+            style={{ border: "1px solid black" }}
+          />
+        </div>
       </div>
     </div>
   );
