@@ -106,4 +106,16 @@ function getFacingIndicatorPoints(posnX, posnY, direction) {
   }
 }
 
-export { isValidMove, getViewport, getFacingIndicatorPoints };
+function handleOnLoad(worldMapData, { assetsLoaded, setAssetsLoaded }) {
+  // preload the tileset image for the current map
+  if (!assetsLoaded) {
+    console.log("Waiting for assets to load...");
+    const tilesetImage = new Image();
+    tilesetImage.src = worldMapData.sprites.tileset.src;
+    tilesetImage.onload = () => {
+      setAssetsLoaded(true);
+    };
+  }
+}
+
+export { isValidMove, getViewport, getFacingIndicatorPoints, handleOnLoad };

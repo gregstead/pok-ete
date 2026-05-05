@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import GLOBALS from "./constants.js";
 import GAME_MAPS from "./gameMaps.js";
-import { getViewport } from "./helpers.js";
+import { getViewport, handleOnLoad } from "./helpers.js";
 import "./App.css";
 import {
   drawPlayer,
@@ -18,6 +18,8 @@ function App() {
     visible: false,
   });
 
+  const [assetsLoaded, setAssetsLoaded] = useState(false); // track whether assets are loaded
+
   const [currentMapId, setCurrentMapId] = useState("bedroom"); // default to bedroom map
   const [playerPosn, setPlayerPosn] = useState({
     x: GAME_MAPS[currentMapId].startingX,
@@ -31,7 +33,10 @@ function App() {
   });
 
   useEffect(() => {
-    console.log("useEffect triggered");
+    handleOnLoad(GAME_MAPS[currentMapId], {
+      assetsLoaded,
+      setAssetsLoaded,
+    });
     drawViewport(
       canvasRef,
       playerPosn.viewPort.viewport,
@@ -42,7 +47,7 @@ function App() {
       // draw the message box
       drawMessageModal(message.text, canvasRef);
     }
-  }, [playerPosn, message, currentMapId]);
+  }, [playerPosn, message, currentMapId, assetsLoaded]);
 
   return (
     <div className="canvas-container">
