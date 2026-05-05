@@ -2,14 +2,7 @@ import GLOBALS from "./constants.js";
 import { isValidMove, getViewport } from "./helpers.js";
 import GAME_MAPS from "./gameMaps.js";
 
-// const PLAYER_DIRECTIONS = {
-//   UP: "up",
-//   DOWN: "down",
-//   LEFT: "left",
-//   RIGHT: "right",
-// };
-
-const PLAYER_DIRECTIONS = GLOBALS.PLAYER_DIRECTIONS;
+const { PLAYER_DIRECTIONS } = GLOBALS;
 
 function movePlayer(
   playerX,
@@ -200,4 +193,4 @@ function handleKeyDown(event, gameState) {
   }
 }
 
-export { handleKeyDown, PLAYER_DIRECTIONS };
+export { handleKeyDown };

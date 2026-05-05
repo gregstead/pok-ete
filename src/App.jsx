@@ -8,7 +8,7 @@ import {
   drawViewport,
   drawMessageModal,
 } from "./canvasRendering.js";
-import { handleKeyDown, PLAYER_DIRECTIONS } from "./userInteractions.js";
+import { handleKeyDown } from "./userInteractions.js";
 
 function App() {
   const canvasRef = useRef(null);
@@ -24,7 +24,7 @@ function App() {
   const [playerPosn, setPlayerPosn] = useState({
     x: GAME_MAPS[currentMapId].startingX,
     y: GAME_MAPS[currentMapId].startingY,
-    direction: PLAYER_DIRECTIONS.DOWN,
+    direction: GLOBALS.PLAYER_DIRECTIONS.DOWN,
     viewPort: getViewport(
       GAME_MAPS[currentMapId],
       GAME_MAPS[currentMapId].startingX,
