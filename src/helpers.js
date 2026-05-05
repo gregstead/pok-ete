@@ -21,6 +21,52 @@ function isValidMove(worldMapData, x, y) {
 }
 
 function getViewport(worldMapData, playerX, playerY) {
+  const viewportWidth = GLOBALS.VIEWPORT_TILE_WIDTH; // 5x5 grid around the player
+  const viewportHeight = GLOBALS.VIEWPORT_TILE_HEIGHT; // 5x5 grid around the player
+  //const viewportSize = 5; // 5x5 grid around the player
+  const halfViewportWidth = Math.floor(viewportWidth / 2);
+  const halfViewportHeight = Math.floor(viewportHeight / 2);
+  const viewportOriginX = playerX - halfViewportWidth;
+  const viewportOriginY = playerY - halfViewportHeight;
+  const viewport = {
+    viewport: [],
+    width: viewportWidth,
+    height: viewportHeight,
+    halfWidth: halfViewportWidth,
+    halfHeight: halfViewportHeight,
+    originX: viewportOriginX,
+    originY: viewportOriginY,
+  };
+
+  for (
+    let y = playerY - halfViewportHeight;
+    y <= playerY + halfViewportHeight;
+    y++
+  ) {
+    const row = [];
+    for (
+      let x = playerX - halfViewportWidth;
+      x <= playerX + halfViewportWidth;
+      x++
+    ) {
+      if (
+        y >= 0 &&
+        y < worldMapData.tiles.length &&
+        x >= 0 &&
+        x < worldMapData.tiles[0].length
+      ) {
+        row.push(tileHandler(worldMapData, x, y)); // use tileHandler to determine what to render
+      } else {
+        row.push(0); // treat out-of-bounds as empty space
+      }
+    }
+    viewport.viewport.push(row);
+  }
+
+  return viewport;
+}
+
+function _getViewportOLD(worldMapData, playerX, playerY) {
   const viewportSize = 5; // 5x5 grid around the player
   const halfViewport = Math.floor(viewportSize / 2);
   const viewportOriginX = playerX - halfViewport;

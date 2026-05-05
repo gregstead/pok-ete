@@ -67,8 +67,14 @@ function App() {
       >
         <canvas
           ref={canvasRef}
-          width={playerPosn.viewPort.viewportSize * GLOBALS.TILE_SIZE}
-          height={playerPosn.viewPort.viewportSize * GLOBALS.TILE_SIZE}
+          width={
+            GLOBALS.CANVAS_PROPERTIES.width *
+            GLOBALS.CANVAS_PROPERTIES.pixelScale
+          }
+          height={
+            GLOBALS.CANVAS_PROPERTIES.height *
+            GLOBALS.CANVAS_PROPERTIES.pixelScale
+          }
           style={{ border: "1px solid black" }}
         />
       </div>

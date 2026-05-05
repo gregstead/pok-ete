@@ -1,6 +1,18 @@
+// Magic numbers
+
+const CANVAS_WIDTH = 160;
+const CANVAS_HEIGHT = 144;
+const SPRITE_TILE_SIZE = 16; // the size of each individual sprite within the tileset image (assuming a grid layout)
 const TILE_SIZE = 32;
 
-const SPRITE_TILE_SIZE = 16; // the size of each individual sprite within the tileset image (assuming a grid layout)
+const CANVAS_PIXEL_SCALE = 2;
+
+const VIEWPORT_TILE_WIDTH = Math.ceil(
+  (CANVAS_WIDTH * CANVAS_PIXEL_SCALE) / TILE_SIZE,
+);
+const VIEWPORT_TILE_HEIGHT = Math.ceil(
+  (CANVAS_HEIGHT * CANVAS_PIXEL_SCALE) / TILE_SIZE,
+);
 
 const BRAND_COLORS = {
   blue_sky: "#0994F9",
@@ -14,6 +26,12 @@ const BRAND_COLORS = {
   red_standard: "#E23667",
 };
 
+const CANVAS_PROPERTIES = {
+  width: CANVAS_WIDTH,
+  height: CANVAS_HEIGHT,
+  pixelScale: CANVAS_PIXEL_SCALE,
+};
+
 const PLAYER_DIRECTIONS = {
   UP: "up",
   DOWN: "down",
@@ -22,10 +40,13 @@ const PLAYER_DIRECTIONS = {
 };
 
 const GLOBALS = {
-  TILE_SIZE,
-  SPRITE_TILE_SIZE,
   BRAND_COLORS,
+  CANVAS_PROPERTIES,
   PLAYER_DIRECTIONS,
+  SPRITE_TILE_SIZE,
+  TILE_SIZE,
+  VIEWPORT_TILE_WIDTH,
+  VIEWPORT_TILE_HEIGHT,
 };
 
 export default GLOBALS;
