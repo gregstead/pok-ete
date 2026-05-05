@@ -35,12 +35,10 @@ const TOWN_MAP = [
 const BEDROOM_OBJECTS = [
   {
     name: "Door",
-    sprite: "door.png",
-    sx: 80, // x coordinate of the door sprite within the tileset
-    sy: 240, // y coordinate of the door sprite within the tileset
-    mapTile: 1, // the tile type that this object is associated with (for rendering purposes)
-    message: "This is a door.",
     type: "door",
+    tilsetIndex: { x: 52, y: 19 }, // the tile coordinates of the door sprite within the tileset
+    terrain: 1, // the tile type that this object is associated with (for rendering purposes)
+    message: "This is a door.",
     objectx: 7, // coordinates for the door object in the bedroom map
     objecty: 3,
   },
@@ -49,8 +47,9 @@ const BEDROOM_OBJECTS = [
 const TOWN_OBJECTS = [
   {
     name: "Welcome Sign",
-    sprite: "sign.png",
     type: "sign",
+    tilsetIndex: { x: 21, y: 20 },
+    terrain: 1,
     message: "Welcome to Pokemon Eternal!",
     objectx: 7,
     objecty: 5,
@@ -58,14 +57,22 @@ const TOWN_OBJECTS = [
 ];
 
 const TOWN_TILESET = new Image();
-TOWN_TILESET.src = "/sprites/tileset.png";
+TOWN_TILESET.src = "/sprites/slates_v2.png";
 
 const TOWN_SPRITES = {
   tileset: TOWN_TILESET,
-  0: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.blue_water_standard }, // water
-  1: { sx: 16, sy: 16, color: GLOBALS.BRAND_COLORS.green_standard }, // grass
-  2: { sx: 64, sy: 16, color: GLOBALS.BRAND_COLORS.green_light }, // path
-  9: { sx: null, sy: null, color: GLOBALS.BRAND_COLORS.orange_standard }, // object (like sign or door)
+  0: {
+    color: GLOBALS.BRAND_COLORS.blue_water_standard,
+    tilesetIndex: { x: 19, y: 4 },
+  }, // water
+  1: {
+    color: GLOBALS.BRAND_COLORS.green_standard,
+    tilesetIndex: { x: 1, y: 2 },
+  }, // grass
+  2: {
+    color: GLOBALS.BRAND_COLORS.green_light,
+    tilesetIndex: { x: 5, y: 2 },
+  }, // path
 };
 
 function getCenterX(map) {

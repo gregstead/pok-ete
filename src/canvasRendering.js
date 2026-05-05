@@ -16,7 +16,9 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
         const spriteData = sprites[tile];
 
         tileToDraw =
-          spriteData && spriteData.sx !== null && spriteData.sy !== null; // only draw default tile if we don't have valid sprite data for this tile
+          spriteData &&
+          spriteData.tilesetIndex.x !== null &&
+          spriteData.tilesetIndex.y !== null; // only draw default tile if we don't have valid sprite data for this tile
 
         if (!tileToDraw) {
           // if we don't have valid sprite data for this tile, fall back to drawing a colored square
@@ -30,8 +32,8 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
         } else {
           ctx.drawImage(
             sprites.tileset,
-            spriteData.sx,
-            spriteData.sy,
+            spriteData.tilesetIndex.x * GLOBALS.SPRITE_TILE_SIZE,
+            spriteData.tilesetIndex.y * GLOBALS.SPRITE_TILE_SIZE,
             GLOBALS.SPRITE_TILE_SIZE,
             GLOBALS.SPRITE_TILE_SIZE,
             x * GLOBALS.TILE_SIZE,
@@ -43,14 +45,44 @@ function drawViewport(canvasRef = null, viewport = null, sprites = null) {
       } else if (
         sprites &&
         tile.gameObject &&
-        tile.gameObject.sx &&
-        tile.gameObject.sy
+        tile.gameObject.tilsetIndex.x &&
+        tile.gameObject.tilsetIndex.y
       ) {
+        // check that the terrain under the map is defined
+        let terrainTile =
+          tile.gameObject.terrain && sprites[tile.gameObject.terrain]; // default to -1 if no terrain tile is defined
+        if (terrainTile) {
+          ctx.drawImage(
+            sprites.tileset,
+            sprites[tile.gameObject.terrain].tilesetIndex.x *
+              GLOBALS.SPRITE_TILE_SIZE,
+            sprites[tile.gameObject.terrain].tilesetIndex.y *
+              GLOBALS.SPRITE_TILE_SIZE,
+            GLOBALS.SPRITE_TILE_SIZE,
+            GLOBALS.SPRITE_TILE_SIZE,
+            x * GLOBALS.TILE_SIZE,
+            y * GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+          );
+        } else {
+          // if no terrain tile defined, just draw a colored square based on the tile value
+          ctx.fillStyle = "gray"; // default color for unknown tiles
+          ctx.fillRect(
+            x * GLOBALS.TILE_SIZE,
+            y * GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+            GLOBALS.TILE_SIZE,
+          );
+          console.log("No terrain sprite data for tile ", tile);
+          console.log("tile.terrain: ", tile.gameObject.terrain ?? null);
+        }
+
         // if tile itself has sprite data, draw it
         ctx.drawImage(
           sprites.tileset,
-          tile.gameObject.sx,
-          tile.gameObject.sy,
+          tile.gameObject.tilsetIndex.x * GLOBALS.SPRITE_TILE_SIZE,
+          tile.gameObject.tilsetIndex.y * GLOBALS.SPRITE_TILE_SIZE,
           GLOBALS.SPRITE_TILE_SIZE,
           GLOBALS.SPRITE_TILE_SIZE,
           x * GLOBALS.TILE_SIZE,
