@@ -137,10 +137,17 @@ function drawPlayer(playerPosn, canvasRef = null) {
 function drawMessageModal(message, canvasRef = null) {
   const canvas = canvasRef.current;
   const ctx = canvas.getContext("2d");
-  const modalWidth = canvas.width * 0.8;
-  const modalHeight = canvas.height * 0.3;
+  const modalWidth = canvas.width * 1;
+  const modalHeight = canvas.height * (3 / 9);
   const modalX = (canvas.width - modalWidth) / 2;
-  const modalY = (canvas.height - modalHeight) / 2;
+  // const modalY = (canvas.height - modalHeight) / 2;
+  const modalY = canvas.height - modalHeight;
+  console.log("Modal dimensions: ", {
+    modalX,
+    modalY,
+    modalWidth,
+    modalHeight,
+  });
 
   // draw semi-transparent background
   ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
@@ -149,9 +156,13 @@ function drawMessageModal(message, canvasRef = null) {
   // draw message text
   ctx.fillStyle = "white";
   ctx.font = "10px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+  ctx.textAlign = "left";
+  ctx.textBaseline = "bottom"; // align text to the top of the modal
+  ctx.fillText(
+    message,
+    canvas.width / 10,
+    canvas.height - canvas.height * (2 / 9),
+  ); // position text with some padding from the left and bottom edges of the modal
 }
 
 export { drawPlayer, drawViewport, drawMessageModal };
