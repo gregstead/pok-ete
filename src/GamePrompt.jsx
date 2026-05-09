@@ -2,17 +2,17 @@ import React from "react";
 
 class GamePrompt extends React.Component {
   render() {
-    const { text, visible, promptOptions } = this.props;
+    const { text, visible, promptOptions, userResponse } = this.props;
     if (!visible) return null; // don't render anything if the prompt isn't visible
 
     return (
       <div className="game-prompt-container">
         {promptOptions && (
-          <div className="prompt-options-container">
-            <div className="prompt-options-modal">
+          <div className="game-prompt-options-container">
+            <div className="game-prompt-options-modal">
               <form>
                 {promptOptions.map((option, index) => (
-                  <div className="radio-option">
+                  <div className="game-prompt-radio-option">
                     <input
                       type="radio"
                       key={index}
@@ -28,9 +28,11 @@ class GamePrompt extends React.Component {
           </div>
         )}
         {text && (
-          <div className="game-prompt-message-container">
-            <div className="game-prompt-message">
-              <p>{text}</p>
+          <div className="game-prompt-text-container">
+            <div className="game-prompt-text-modal">
+              <div className="game-prompt-text">
+                <p>{text}</p>
+              </div>
             </div>
           </div>
         )}

@@ -65,8 +65,8 @@ function playerInteraction(gameState) {
 function objectInteractionHandler(gameObject, gameState) {
   let newMapId;
   const {
-    message,
-    setMessage,
+    gamePrompt,
+    setGamePrompt,
     _currentMapId,
     setCurrentMapId,
     playerPosn,
@@ -75,19 +75,19 @@ function objectInteractionHandler(gameObject, gameState) {
 
   switch (gameObject.type) {
     case "sign":
-      if (!message.visible) {
-        setMessage({
+      if (!gamePrompt.visible) {
+        setGamePrompt({
           text: gameObject.message,
           visible: true,
           promptOptions: null,
         });
       } else {
-        setMessage({ text: "", visible: false, promptOptions: null });
+        setGamePrompt({ text: "", visible: false, promptOptions: null });
       }
       break;
     case "portal":
-      if (!message.visible) {
-        setMessage({
+      if (!gamePrompt.visible) {
+        setGamePrompt({
           text: gameObject.action.promptMessage,
           visible: true,
           promptOptions: gameObject.action.promptOptions,
@@ -95,13 +95,13 @@ function objectInteractionHandler(gameObject, gameState) {
 
         return; // wait for the player to acknowledge the message before changing maps
       } else {
-        setMessage({ text: "", visible: false, promptOptions: null });
+        setGamePrompt({ text: "", visible: false, promptOptions: null });
       }
 
       newMapId = gameObject.action.targetMap;
 
       setCurrentMapId(newMapId);
-      setMessage({ text: "", visible: false, promptOptions: null }); // hide any messages when changing maps
+      setGamePrompt({ text: "", visible: false, promptOptions: null }); // hide any messages when changing maps
       // reset player position to the center of the new map
       setPlayerPosn({
         x: GAME_MAPS[newMapId].startingX,
@@ -201,7 +201,10 @@ function handleKeyDown(event, gameState) {
       break;
     case " ":
       // space bar pressed - could be used for interactions in the future
-      console.log("Space bar pressed - interaction placeholder");
+      console.log(
+        "Space bar pressed - interaction placeholder - State: ",
+        gameState,
+      );
       playerInteraction(gameState);
       break;
     default:

@@ -4,27 +4,24 @@ import GAME_MAPS from "./gameMaps.js";
 import { getViewport, handleOnLoad } from "./helpers.js";
 import "./App.css";
 import "./game-sm.css";
-import {
-  drawPlayer,
-  drawViewport,
-  drawMessageModal,
-} from "./canvasRendering.js";
+import { drawPlayer, drawViewport } from "./canvasRendering.js";
 import { handleKeyDown } from "./userInteractions.js";
 import GamePrompt from "./GamePrompt.jsx";
 
 function App() {
   const canvasRef = useRef(null);
   // Game Messages
-  const [message, setMessage] = useState({
-    text: "",
-    visible: false,
-    promptOptions: null, // for future use when we want to add options to messages (e.g. yes/no prompts)
-  });
+  // const [message, setMessage] = useState({
+  //   text: "",
+  //   visible: false,
+  //   promptOptions: null, // for future use when we want to add options to messages (e.g. yes/no prompts)
+  // });
 
-  const [gamePompts, setGamePrompts] = useState({
+  const [gamePrompts, setGamePrompts] = useState({
     text: "",
     visible: false,
     promptOptions: null,
+    userResponse: null,
   });
 
   const [assetsLoaded, setAssetsLoaded] = useState(false); // track whether assets are loaded
@@ -52,11 +49,7 @@ function App() {
       GAME_MAPS[currentMapId].sprites,
     );
     drawPlayer(playerPosn, canvasRef);
-    if (gamePompts.visible) {
-      // draw the message box
-      drawMessageModal(gamePompts.text, canvasRef);
-    }
-  }, [playerPosn, message, currentMapId, assetsLoaded, gamePompts]);
+  }, [playerPosn, gamePrompts, currentMapId, assetsLoaded, gamePrompts]);
 
   return (
     <div className="app-container">
@@ -85,8 +78,8 @@ function App() {
                   handleKeyDown(event, {
                     playerPosn,
                     setPlayerPosn,
-                    message,
-                    setMessage,
+                    gamePrompts,
+                    setGamePrompts,
                     currentMapId,
                     setCurrentMapId,
                   })
@@ -107,9 +100,10 @@ function App() {
               </div>
             </div>
             <GamePrompt
-              text={message.text}
-              visible={message.visible}
-              promptOptions={message.promptOptions}
+              text={gamePrompts.text}
+              visible={gamePrompts.visible}
+              promptOptions={gamePrompts.promptOptions}
+              userResponse={gamePrompts.userResponse}
             />
           </div>
         </div>
