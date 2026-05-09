@@ -3,6 +3,7 @@ import GLOBALS from "./constants.js";
 import GAME_MAPS from "./gameMaps.js";
 import { getViewport, handleOnLoad } from "./helpers.js";
 import "./App.css";
+import "./game-sm.css";
 import {
   drawPlayer,
   drawViewport,
@@ -51,46 +52,66 @@ function App() {
       GAME_MAPS[currentMapId].sprites,
     );
     drawPlayer(playerPosn, canvasRef);
-    if (message.visible) {
+    if (gamePompts.visible) {
       // draw the message box
-      drawMessageModal(message, canvasRef);
+      drawMessageModal(gamePompts.text, canvasRef);
     }
-  }, [playerPosn, message, currentMapId, assetsLoaded]);
+  }, [playerPosn, message, currentMapId, assetsLoaded, gamePompts]);
 
   return (
-    <div className="game-container">
-      <GamePrompt
-        text={message.text}
-        visible={message.visible}
-        promptOptions={message.promptOptions}
-      />
-      <div className="canvas-container">
-        <div
-          className="canvas-handler-container"
-          tabIndex={0} // make the div focusable to receive key events
-          onKeyDown={(event) =>
-            handleKeyDown(event, {
-              playerPosn,
-              setPlayerPosn,
-              message,
-              setMessage,
-              currentMapId,
-              setCurrentMapId,
-            })
-          }
-        >
-          <canvas
-            ref={canvasRef}
-            width={
-              GLOBALS.CANVAS_PROPERTIES.width *
-              GLOBALS.CANVAS_PROPERTIES.pixelScale
-            }
-            height={
-              GLOBALS.CANVAS_PROPERTIES.height *
-              GLOBALS.CANVAS_PROPERTIES.pixelScale
-            }
-            style={{ border: "1px solid black" }}
-          />
+    <div className="app-container">
+      <div className="game-sm-bezel">
+        <div className="game-sm-bezel-super-container">
+          <span className="game-sm-bezel-super-accent game-sm-bezel-super-accent-left">
+            &zwnj;
+          </span>
+          <span className="game-sm-bezel-super-text">
+            {GLOBALS.GAME_SM_TEXT.BEZEL_SUPER}
+          </span>
+          <span className="game-sm-bezel-super-accent game-sm-bezel-super-accent-right">
+            &zwnj;
+          </span>
+        </div>
+        <div className="game-sm-bezel-power-indicator hidden d-none">
+          &zwnj;
+        </div>
+        <div className="game-sm-bezel-display">
+          <div className="game-container">
+            <div className="canvas-container">
+              <div
+                className="canvas-handler-container"
+                tabIndex={0} // make the div focusable to receive key events
+                onKeyDown={(event) =>
+                  handleKeyDown(event, {
+                    playerPosn,
+                    setPlayerPosn,
+                    message,
+                    setMessage,
+                    currentMapId,
+                    setCurrentMapId,
+                  })
+                }
+              >
+                <canvas
+                  ref={canvasRef}
+                  width={
+                    GLOBALS.CANVAS_PROPERTIES.width *
+                    GLOBALS.CANVAS_PROPERTIES.pixelScale
+                  }
+                  height={
+                    GLOBALS.CANVAS_PROPERTIES.height *
+                    GLOBALS.CANVAS_PROPERTIES.pixelScale
+                  }
+                  style={{ border: "1px solid black" }}
+                />
+              </div>
+            </div>
+            <GamePrompt
+              text={message.text}
+              visible={message.visible}
+              promptOptions={message.promptOptions}
+            />
+          </div>
         </div>
       </div>
     </div>

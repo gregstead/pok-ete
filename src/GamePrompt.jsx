@@ -6,13 +6,32 @@ class GamePrompt extends React.Component {
     if (!visible) return null; // don't render anything if the prompt isn't visible
 
     return (
-      <div className="game-prompt">
-        <p>{text}</p>
+      <div className="game-prompt-container">
         {promptOptions && (
-          <div className="prompt-options">
-            {promptOptions.map((option, index) => (
-              <button key={index}>{option}</button>
-            ))}
+          <div className="prompt-options-container">
+            <div className="prompt-options-modal">
+              <form>
+                {promptOptions.map((option, index) => (
+                  <div className="radio-option">
+                    <input
+                      type="radio"
+                      key={index}
+                      id={`option-${index}`}
+                      name="prompt-option"
+                      value={option}
+                    />
+                    <label htmlFor={`option-${index}`}>{option}</label>
+                  </div>
+                ))}
+              </form>
+            </div>
+          </div>
+        )}
+        {text && (
+          <div className="game-prompt-message-container">
+            <div className="game-prompt-message">
+              <p>{text}</p>
+            </div>
           </div>
         )}
       </div>

@@ -1,0 +1,6 @@
+/* Magic Numbers */
+:root {
+  --canvas-width: 624px;
+  --canvas-height: 468px;
+  --sprite-tile-size: 32px; /* this needs to be updated in constants.js if changed */
+}

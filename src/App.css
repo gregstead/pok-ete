@@ -1,3 +1,35 @@
+/* Magic Numbers ... figure out how to receive them as parameters or share them with a common parent...  */
+:root {
+  --CANVAS-WIDTH: 624px;
+  --CANVAS-HEIGHT: 468px;
+  --TILE-SIZE: 32px;
+}
+
+@font-face {
+  font-family: "w95f";
+  src: url("/public/fonts/w95fa/w95f.woff") format("truetype");
+}
+
+@font-face {
+  font-family: "w95f2";
+  src: url("/public/fonts/w95fa/w95f.woff2") format("truetype");
+}
+
+.app-container {
+  margin: 75px auto;
+}
+
+.game-prompt-container * {
+  font-family: "w95f", "w95f2";
+}
+
+.game-container {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto; /* Center the container horizontally */
+  overflow: hidden; /* Hide any overflow from the canvas */
+}
+
 .canvas-container {
   display: block;
 }
@@ -9,4 +41,20 @@
 
 .canvas-handler-container {
   line-height: 0; /* Remove extra space below the canvas */
+}
+
+.game-prompt-container {
+  position: absolute;
+  border-radius: 2px;
+  width: 100%;
+  bottom: 0;
+  z-index: 10;
+}
+
+.game-prompt-message-container {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  padding: 10px;
+  margin: 0;
+  height: calc(var(--CANVAS-HEIGHT) * 5 / 9);
 }

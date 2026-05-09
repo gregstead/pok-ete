@@ -16,7 +16,7 @@ const BEDROOM_MAP = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const TOWN_MAP = [
+const GAME_MAP = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
   [0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0],
@@ -33,27 +33,13 @@ const TOWN_MAP = [
 ];
 
 const BEDROOM_OBJECTS = [
-  //   {
-  //     name: "Door",
-  //     type: "door",
-  //     tilsetIndex: { x: 52, y: 19 }, // the tile coordinates of the door sprite within the tileset
-  //     terrain: 1, // the tile type that this object is associated with (for rendering purposes)
-  //     message: "Leave bedroom and go to town?", // the message to display when the player interacts with this object
-  //     objectx: 7, // coordinates for the door object in the bedroom map
-  //     objecty: 3,
-  //     action: {
-  //       type: "changeMap", // define the action to take when interacting with this object
-  //       targetMap: "town", // the map to switch to when the door is interacted with
-  //     },
-
-  //   },
   {
     name: "Bedroom Door",
     type: "portal",
     tilsetIndex: { x: 52, y: 19 },
-    terrain: 1,
+    terrain: 0,
     objectx: 7,
-    objecty: 3,
+    objecty: 0,
     action: {
       type: "changeMap",
       targetMap: "town",
@@ -75,14 +61,30 @@ const TOWN_OBJECTS = [
   },
 ];
 
-const TOWN_TILESET = new Image();
-TOWN_TILESET.src = "/sprites/slates_v2.png";
+const GAME_TILESET = new Image();
+GAME_TILESET.src = "/sprites/slates_v2.png";
+
+const BEDROOM_SPRITES = {
+  tileset: GAME_TILESET,
+  0: {
+    color: GLOBALS.BRAND_COLORS.black_buildings,
+    tilesetIndex: { x: null, y: null },
+  }, // water
+  1: {
+    color: GLOBALS.BRAND_COLORS.beige_building_floors,
+    tilesetIndex: { x: 13, y: 2 },
+  }, // grass
+  2: {
+    color: GLOBALS.BRAND_COLORS.beige_building_floors_dark,
+    tilesetIndex: { x: 15, y: 7 },
+  }, // path
+};
 
 const TOWN_SPRITES = {
-  tileset: TOWN_TILESET,
+  tileset: GAME_TILESET,
   0: {
     color: GLOBALS.BRAND_COLORS.blue_water_standard,
-    tilesetIndex: { x: 19, y: 4 },
+    tilesetIndex: { x: null, y: null },
   }, // water
   1: {
     color: GLOBALS.BRAND_COLORS.green_standard,
@@ -110,13 +112,13 @@ const GAME_MAPS = {
     centerY: getCenterY(BEDROOM_MAP),
     startingX: 1,
     startingY: 1,
-    sprites: TOWN_SPRITES, // for simplicity, we'll use the same sprites for both maps for now
+    sprites: BEDROOM_SPRITES,
   },
   town: {
-    tiles: TOWN_MAP,
+    tiles: GAME_MAP,
     objects: TOWN_OBJECTS,
-    centerX: getCenterX(TOWN_MAP),
-    centerY: getCenterY(TOWN_MAP),
+    centerX: getCenterX(GAME_MAP),
+    centerY: getCenterY(GAME_MAP),
     startingX: 1,
     startingY: 1,
     sprites: TOWN_SPRITES,
