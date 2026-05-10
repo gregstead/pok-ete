@@ -10,17 +10,13 @@ import GamePrompt from "./GamePrompt.jsx";
 
 function App() {
   const canvasRef = useRef(null);
-  // Game Messages
-  // const [message, setMessage] = useState({
-  //   text: "",
-  //   visible: false,
-  //   promptOptions: null, // for future use when we want to add options to messages (e.g. yes/no prompts)
-  // });
 
-  const [gamePrompts, setGamePrompts] = useState({
+  const [gamePrompt, setGamePrompt] = useState({
     text: "",
     visible: false,
     promptOptions: null,
+    // TODO next: treat this as the single source of truth for the selected prompt option.
+    // The radio inputs should update this value; Enter/confirm should consume it.
     userResponse: null,
   });
 
@@ -49,7 +45,7 @@ function App() {
       GAME_MAPS[currentMapId].sprites,
     );
     drawPlayer(playerPosn, canvasRef);
-  }, [playerPosn, gamePrompts, currentMapId, assetsLoaded, gamePrompts]);
+  }, [playerPosn, gamePrompt, currentMapId, assetsLoaded, gamePrompt]);
 
   return (
     <div className="app-container">
@@ -74,12 +70,14 @@ function App() {
               <div
                 className="canvas-handler-container"
                 tabIndex={0} // make the div focusable to receive key events
+                // TODO next: once the prompt owns focus while visible, decide whether this
+                // handler should stay here or move to a shared parent/prompt-specific handler.
                 onKeyDown={(event) =>
                   handleKeyDown(event, {
                     playerPosn,
                     setPlayerPosn,
-                    gamePrompts,
-                    setGamePrompts,
+                    gamePrompt,
+                    setGamePrompt,
                     currentMapId,
                     setCurrentMapId,
                   })
@@ -99,12 +97,7 @@ function App() {
                 />
               </div>
             </div>
-            <GamePrompt
-              text={gamePrompts.text}
-              visible={gamePrompts.visible}
-              promptOptions={gamePrompts.promptOptions}
-              userResponse={gamePrompts.userResponse}
-            />
+            <GamePrompt gamePrompt={gamePrompt} setGamePrompt={setGamePrompt} />
           </div>
         </div>
       </div>

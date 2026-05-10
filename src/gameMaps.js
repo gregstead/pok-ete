@@ -44,7 +44,10 @@ const BEDROOM_OBJECTS = [
       type: "changeMap",
       targetMap: "town",
       promptMessage: "Leave bedroom and go to town?",
-      promptOptions: ["Yes", "No"], // options for the player to choose from when prompted
+      promptOptions: [
+        { text: "yes", value: true },
+        { text: "no", value: false },
+      ], // options for the player to choose from when prompted
     },
   },
 ];

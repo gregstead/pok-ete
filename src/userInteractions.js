@@ -77,17 +77,24 @@ function objectInteractionHandler(gameObject, gameState) {
     case "sign":
       if (!gamePrompt.visible) {
         setGamePrompt({
+          ...gamePrompt,
           text: gameObject.message,
           visible: true,
           promptOptions: null,
         });
       } else {
-        setGamePrompt({ text: "", visible: false, promptOptions: null });
+        setGamePrompt({
+          ...gamePrompt,
+          text: "",
+          visible: false,
+          promptOptions: null,
+        });
       }
       break;
     case "portal":
       if (!gamePrompt.visible) {
         setGamePrompt({
+          ...gamePrompt,
           text: gameObject.action.promptMessage,
           visible: true,
           promptOptions: gameObject.action.promptOptions,
@@ -95,33 +102,46 @@ function objectInteractionHandler(gameObject, gameState) {
 
         return; // wait for the player to acknowledge the message before changing maps
       } else {
-        setGamePrompt({ text: "", visible: false, promptOptions: null });
+        setGamePrompt({
+          ...gamePrompt,
+          text: "",
+          visible: false,
+          promptOptions: null,
+        });
       }
 
-      newMapId = gameObject.action.targetMap;
+      // TODO next: this portal action is now a two-step flow:
+      // 1. show the prompt and capture userResponse
+      // 2. confirm the response, then run or cancel the map transition below
+      // newMapId = gameObject.action.targetMap;
 
-      setCurrentMapId(newMapId);
-      setGamePrompt({ text: "", visible: false, promptOptions: null }); // hide any messages when changing maps
-      // reset player position to the center of the new map
-      setPlayerPosn({
-        x: GAME_MAPS[newMapId].startingX,
-        y: GAME_MAPS[newMapId].startingY,
-        direction: playerPosn.direction, // keep the same direction when changing maps
-        viewPort: getViewport(
-          GAME_MAPS[newMapId],
-          GAME_MAPS[newMapId].startingX,
-          GAME_MAPS[newMapId].startingY,
-        ), // update the viewport for the new map
-      });
+      // setCurrentMapId(newMapId);
+      // setGamePrompt({
+      //   ...gamePrompt,
+      //   text: "",
+      //   visible: false,
+      //   promptOptions: null,
+      // }); // hide any messages when changing maps
+      // // reset player position to the center of the new map
+      // setPlayerPosn({
+      //   ...playerPosn,
+      //   x: GAME_MAPS[newMapId].startingX,
+      //   y: GAME_MAPS[newMapId].startingY,
+      //   direction: playerPosn.direction, // keep the same direction when changing maps
+      //   viewPort: getViewport(
+      //     GAME_MAPS[newMapId],
+      //     GAME_MAPS[newMapId].startingX,
+      //     GAME_MAPS[newMapId].startingY,
+      //   ), // update the viewport for the new map
+      // });
       break;
     default:
       break;
   }
 }
 
-function handleKeyDown(event, gameState) {
+function handleGameDynamics(event, gameState) {
   const { playerPosn, setPlayerPosn, currentMapId } = gameState;
-
   switch (event.key) {
     case "ArrowUp":
       movePlayer(
@@ -134,6 +154,7 @@ function handleKeyDown(event, gameState) {
         currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
+            ...playerPosn,
             x: newX,
             y: newY,
             direction,
@@ -153,6 +174,7 @@ function handleKeyDown(event, gameState) {
         currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
+            ...playerPosn,
             x: newX,
             y: newY,
             direction,
@@ -172,6 +194,7 @@ function handleKeyDown(event, gameState) {
         currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
+            ...playerPosn,
             x: newX,
             y: newY,
             direction,
@@ -191,6 +214,7 @@ function handleKeyDown(event, gameState) {
         currentMapId,
         (newX, newY, direction) => {
           setPlayerPosn({
+            ...playerPosn,
             x: newX,
             y: newY,
             direction,
@@ -212,4 +236,35 @@ function handleKeyDown(event, gameState) {
   }
 }
 
-export { handleKeyDown };
+function handleGamePromptKeydown(event, gameState) {
+  const { gamePrompt, _setGamePrompt } = gameState;
+  // TODO next: do not read the selected option from event.target here.
+  // Read gamePrompt.userResponse, then use Enter/Space to confirm or Escape to cancel.
+  console.log(
+    "handleGamePromptKeydown: target ",
+    event.target,
+    "gamePrompt ",
+    gamePrompt,
+  );
+}
+
+function handleKeyDown(event, gameState) {
+  const { gamePrompt } = gameState;
+  console.log("handleKeyDown, ", event.key);
+  if (!gamePrompt.visible) {
+    handleGameDynamics(event, gameState);
+  } else {
+    handleGamePromptKeydown(event, gameState);
+  }
+}
+
+function handleFormFocus(event, gamePromptState) {
+  const { gamePrompt, setGamePrompt } = gamePromptState;
+  const userResponse = event.target.value;
+  // TODO next: this should likely become handlePromptOptionChange.
+  // Use setGamePrompt((prev) => ({ ...prev, userResponse })) so selection updates
+  // are based on the latest React state instead of the render that created this handler.
+  console.log("Value changed: ", userResponse);
+}
+
+export { handleKeyDown, handleGamePromptKeydown, handleFormFocus };
